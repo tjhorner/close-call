@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model CloseCallReport {
+  id                 String   @id @default(uuid())
+  occurredAt         DateTime
+  latitude           Float
+  longitude          Float
+  transportationMode String
+  description        String
+  emailAddress       String?
+}

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte"
 
+  export let name: string
   export let value = new Date()
 
   let inputElement: HTMLInputElement
@@ -37,6 +38,7 @@
 </style>
 
 <input
+  {name}
   bind:this={inputElement}
   type="datetime-local"
   on:change={(e) => updateSelectedDate(e.currentTarget.value)} />

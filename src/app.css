@@ -56,6 +56,11 @@ a.button {
   text-decoration: none;
 }
 
+input[type="text"], input[type="email"], input[type="password"], textarea{
+  padding: 10px;
+  font-size: 1.2em;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     background-color: #1a1a1a;

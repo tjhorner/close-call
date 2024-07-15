@@ -3,6 +3,7 @@
   import { AttributionControl, DefaultMarker, MapLibre, type LngLatLike } from "svelte-maplibre"
   import Warning from "../Warning.svelte"
 
+  export let name: string
   export let value: { lat: number, lng: number } = { lat: 0, lng: 0 }
 
   const geolocationAvailable = "geolocation" in navigator
@@ -70,7 +71,7 @@
 </style>
 
 {#if geolocationAvailable}
-  <button on:click={setToCurrentLocation} disabled={gettingLocation}>
+  <button on:click|preventDefault={setToCurrentLocation} disabled={gettingLocation}>
     {#if gettingLocation}
       Finding your location...
     {:else}
@@ -99,3 +100,6 @@
     bind:lngLat={value}
     draggable />
 </MapLibre>
+
+<input type="hidden" name="{name}[latitude]" bind:value={value.lat} />
+<input type="hidden" name="{name}[longitude]" bind:value={value.lng} />

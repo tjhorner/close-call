@@ -4,6 +4,7 @@
     value: string
   }[] = []
 
+  export let name: string
   export let value: string | undefined = undefined
 </script>
 
@@ -29,10 +30,12 @@
 <div class="options">
   {#each options as option}
     <button
-      on:click={() => value = option.value}
+      on:click|preventDefault={() => value = option.value}
       class:selected={option.value === value}
     >
       {option.label}
     </button>
   {/each}
 </div>
+
+<input type="hidden" {name} {value} />
