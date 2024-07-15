@@ -38,7 +38,8 @@
 </style>
 
 <input
-  {name}
   bind:this={inputElement}
   type="datetime-local"
   on:change={(e) => updateSelectedDate(e.currentTarget.value)} />
+
+<input type="hidden" {name} value={value.toISOString()} />

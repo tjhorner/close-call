@@ -54,6 +54,7 @@
       
       <MultipleChoiceInput
         name="transportationMode"
+        required
         bind:value={transportationMode}
         options={[
           {

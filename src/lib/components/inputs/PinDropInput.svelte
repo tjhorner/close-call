@@ -101,5 +101,5 @@
     draggable />
 </MapLibre>
 
-<input type="hidden" name="{name}[latitude]" bind:value={value.lat} />
-<input type="hidden" name="{name}[longitude]" bind:value={value.lng} />
+<input type="hidden" name="{name}.latitude" bind:value={value.lat} />
+<input type="hidden" name="{name}.longitude" bind:value={value.lng} />

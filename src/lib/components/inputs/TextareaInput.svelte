@@ -1,6 +1,7 @@
 <script lang="ts">
   export let name: string
   export let value: string = ""
+  export let required: boolean = false
 </script>
 
 <style>
@@ -13,4 +14,4 @@
   }
 </style>
 
-<textarea bind:value {name} />
+<textarea bind:value {required} {name} />
