@@ -6,7 +6,7 @@
   .warning {
     padding: 15px;
     border-radius: 5px;
-    margin-bottom: 15px;
+    margin: 15px 0;
   }
 
   .warning.red {
@@ -32,6 +32,6 @@
   }
 </style>
 
-<p class="warning {color}">
+<div class="warning {color}">
   <slot />
-</p>
+</div>
