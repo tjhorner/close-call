@@ -1,52 +1,11 @@
-<script lang="ts">
-  import Survey from "$lib/components/Survey.svelte"
+<h1>Had a close call?</h1>
 
-  function onAnswer(answer: any) {
-    if (answer.id === "reportType" && answer.answer === "crash") {
-      console.log("🚨 Calling 911")
-    }
-  }
-</script>
+<p>
+  If you've almost been in a collision, you can report it here anonymously.
+  Your report will be aggregated on a public map of other close calls in your area,
+  and will be used to help make the roads safer for everyone.
+</p>
 
-<Survey
-  questions={[
-    {
-      type: "multipleChoice",
-      id: "reportType",
-      prompt: "What are you reporting?",
-      options: [
-        {
-          label: "😮‍💨 A close call",
-          value: "closeCall"
-        },
-        {
-          label: "🚧 A concern",
-          value: "concern"
-        },
-        {
-          label: "💥 A crash",
-          value: "crash"
-        }
-      ]
-    },
-    {
-      type: "multipleChoice",
-      id: "location",
-      prompt: "Where did it happen?",
-      options: [
-        {
-          label: "This intersection",
-          value: "intersection"
-        },
-        {
-          label: "Current location",
-          value: "currentLocation"
-        }
-      ]
-    }
-  ]}
-  on:answer={(detail) => onAnswer(detail)}
-  on:allAnswers={({ detail }) => {
-    console.log(detail)
-  }}
-/>
+<a class="button" href="/report">
+  Submit a close call report
+</a>

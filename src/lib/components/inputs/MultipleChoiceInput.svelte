@@ -1,38 +1,38 @@
-<script context="module" lang="ts">
-  import type { SurveyQuestion } from "../Survey.svelte"
-
-  export interface MultipleChoiceQuestion extends SurveyQuestion<"multipleChoice", string> {
-    options: {
-      value: string
-      label: string
-    }[]
-  }
-</script>
-
 <script lang="ts">
-  import { createEventDispatcher } from "svelte"
+  export let options: {
+    label: string,
+    value: string
+  }[] = []
 
-  export let question: MultipleChoiceQuestion
-
-  const dispatch = createEventDispatcher<{
-    answer: string
-  }>()
+  export let value: string | undefined = undefined
 </script>
 
 <style>
-  .answer-button {
-    display: block;
-    font-size: 1.5em;
+  @media screen and (max-width: 940px) {
+    .options {
+      flex-direction: column;
+    }
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
     width: 100%;
-    background: #48a8ff;
-    color: white;
-    margin-bottom: 1em;
-    border: none;
-    padding: 0.25em;
-    font-weight: medium;
+  }
+
+  .options button {
+    flex-grow: 1;
   }
 </style>
 
-{#each question.options as { value, label } (value)}
-  <button class="answer-button" on:click={() => dispatch("answer", value)}>{label}</button>
-{/each}
+<div class="options">
+  {#each options as option}
+    <button
+      on:click={() => value = option.value}
+      class:selected={option.value === value}
+    >
+      {option.label}
+    </button>
+  {/each}
+</div>
