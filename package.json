@@ -8,7 +8,11 @@
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"vercel-build": "prisma generate && prisma migrate deploy && vite build"
+		"prisma:inline": "cp ./node_modules/.prisma/client/*.js ./node_modules/@prisma/client",
+		"prisma:migrate": "prisma migrate deploy && npm run prisma:inline",
+		"prisma:migrate:dev": "prisma migrate dev && npm run prisma:inline",
+		"prisma:generate": "prisma generate && npm run prisma:inline",
+		"vercel-build": "npm run prisma:generate && prisma migrate deploy && npm run prisma:inline && vite build"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
