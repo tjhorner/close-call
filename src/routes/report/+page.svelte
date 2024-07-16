@@ -28,13 +28,6 @@
     please <strong><a href="tel:911">dial 911</a></strong> immediately.
   </Warning>
 
-  {#if form?.errorSummary}
-    <Warning color="yellow">
-      <strong>Your form submission had errors:</strong>
-      {form.errorSummary}
-    </Warning>
-  {/if}
-
   <form method="post" use:enhance={() => {
     submitting = true
     return async ({ update, result }) => {
@@ -131,6 +124,13 @@
     </section>
 
     <section class="submit">
+      {#if form?.errorSummary}
+        <Warning color="yellow">
+          <strong>Your form submission had errors:</strong>
+          {form.errorSummary}
+        </Warning>
+      {/if}
+
       <button type="submit" class="full-width" disabled={submitting}>
         {#if submitting}
           Submitting...
