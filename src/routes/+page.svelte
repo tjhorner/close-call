@@ -21,9 +21,11 @@
     }))
   }
 
-  const bounds = data.reports.reduce((bounds, report) => {
-    return bounds.extend([report.longitude, report.latitude])
-  }, new maplibregl.LngLatBounds([0, 0]))
+  const bounds = data.reports.length
+    ? data.reports.reduce((bounds, report) => {
+        return bounds.extend([report.longitude, report.latitude])
+      }, new maplibregl.LngLatBounds())
+    : undefined
 
   onMount(() => {
     console.log(reports)
