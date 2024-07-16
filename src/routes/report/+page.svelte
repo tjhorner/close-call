@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { ActionData } from "./$types"
   import { enhance } from "$app/forms"
   import DateTimeInput from "$lib/components/inputs/DateTimeInput.svelte"
   import MultipleChoiceInput from "$lib/components/inputs/MultipleChoiceInput.svelte"
@@ -6,7 +7,10 @@
   import TextareaInput from "$lib/components/inputs/TextareaInput.svelte"
   import Warning from "$lib/components/Warning.svelte"
 
+  export let form: ActionData
+
   let transportationMode = ""
+  let submitting = false
 </script>
 
 <div class="fixed-width">
@@ -17,11 +21,24 @@
   </a>
 
   <Warning>
-    This form is for close calls only. If anyone was involved in a serious collision,
+    This form is for near-misses only. If anyone was involved in a serious collision,
     please <strong><a href="tel:911">dial 911</a></strong> immediately.
   </Warning>
 
-  <form method="post" use:enhance>
+  {#if form?.errorSummary}
+    <Warning color="yellow">
+      <strong>Your form submission had errors:</strong>
+      {form.errorSummary}
+    </Warning>
+  {/if}
+
+  <form method="post" use:enhance={() => {
+    submitting = true
+    return async ({ update, result }) => {
+      submitting = false
+      update({ reset: false })
+    }
+  }}>
     <section class="location">
       <h2>🌎 Where did it happen?</h2>
 
@@ -45,8 +62,7 @@
         It doesn't need to be exact.
       </p>
 
-      <DateTimeInput
-        name="time" />
+      <DateTimeInput name="time" />
     </section>
 
     <section class="transportation-mode">
@@ -93,8 +109,7 @@
         Please provide a brief description of the incident.
       </p>
 
-      <TextareaInput
-        name="description" />
+      <TextareaInput name="description" required />
     </section>
 
     <section class="contact">
@@ -102,7 +117,7 @@
 
       <p>
         Optionally provide your email address below if you'd like to be contacted
-        about your report.
+        about your report. It will not be published publicly.
       </p>
 
       <input
@@ -113,8 +128,12 @@
     </section>
 
     <section class="submit">
-      <button type="submit" class="full-width">
-        Submit Report
+      <button type="submit" class="full-width" disabled={submitting}>
+        {#if submitting}
+          Submitting...
+        {:else}
+          ✅ Submit Report
+        {/if}
       </button>
 
       <p>
@@ -123,10 +142,6 @@
         The data may also be used by the volunteers at
         <a href="https://eastsideurbanism.org/">Eastside Urbanism</a>
         to help make the roads safer for everyone (for example, by sharing it with local officials).
-      </p>
-
-      <p>
-        Your email will not be published publicly.
       </p>
     </section>
   </form>

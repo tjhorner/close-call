@@ -1,3 +1,4 @@
+import { queryOverpass } from "$lib/overpass.js"
 import prisma from "$lib/prisma.js"
 import { fail, redirect } from "@sveltejs/kit"
 import { type } from "arktype"
@@ -12,23 +13,58 @@ function getStringValue(form: FormData, key: string): string {
 }
 
 const reportForm = type({
-  latitude: "-90<parse.number<90",
-  longitude: "-180<parse.number<180",
+  latitude: "-90<number<90",
+  longitude: "-180<number<180",
   occurredAt: "parse.date",
-  transportationMode: "'walking' | 'bicycle' | 'wheelchair' | 'scooter' | 'other'",
-  description: "string",
+  transportationMode: "'WALKING' | 'BICYCLE' | 'WHEELCHAIR' | 'SCOOTER' | 'OTHER'",
+  description: "string>0",
   emailAddress: "email | ''"
 })
+
+async function getJurisdictionId(lat: number, lng: number): Promise<string | null> {
+  const boundaryResults = await queryOverpass(
+    `[timeout:10][out:json];
+    is_in(${lat},${lng})->.a;
+    relation["boundary"="administrative"]["admin_level"="8"](pivot.a);
+    out tags;`
+  )
+
+  if (boundaryResults.elements.length === 0) {
+    return null
+  }
+
+  const jurisdictionTags = boundaryResults.elements[0].tags
+  const gnisId = jurisdictionTags["gnis:feature_id"]
+
+  if (!gnisId) {
+    return null
+  }
+
+  const jurisdiction = await prisma.jurisdiction.upsert({
+    where: {
+      gnisId
+    },
+    update: { },
+    create: {
+      name: jurisdictionTags["name"] ?? "Unknown",
+      stateName: jurisdictionTags["is_in:state"] ?? null,
+      wikidataId: jurisdictionTags["wikidata"] ?? null,
+      gnisId
+    }
+  })
+
+  return jurisdiction.id
+}
 
 export const actions = {
   default: async ({ request }) => {
     const data = await request.formData()
 
     const reportData = reportForm({
-      latitude: getStringValue(data, "location.latitude"),
-      longitude: getStringValue(data, "location.longitude"),
+      latitude: parseFloat(getStringValue(data, "location.latitude")),
+      longitude: parseFloat(getStringValue(data, "location.longitude")),
       occurredAt: getStringValue(data, "time"),
-      transportationMode: getStringValue(data, "transportationMode"),
+      transportationMode: getStringValue(data, "transportationMode").toUpperCase(),
       description: getStringValue(data, "description"),
       emailAddress: getStringValue(data, "email")
     })
@@ -38,11 +74,26 @@ export const actions = {
         errorSummary: reportData.summary
       })
     }
+
+    let jurisdictionId: string | null = null
+    try {
+      jurisdictionId = await getJurisdictionId(reportData.latitude, reportData.longitude)
+    } catch (error) {
+      console.error("Failed to get jurisdiction ID", error)
+    }
   
     await prisma.closeCallReport.create({
-      data: reportData
+      data: {
+        jurisdictionId,
+        ...reportData
+      }
     })
 
-    throw redirect(303, "/report/success")
+    let redirectUrl = "/report/thanks"
+    if (jurisdictionId) {
+      redirectUrl += `?jurisdiction=${jurisdictionId}`
+    }
+
+    throw redirect(303, redirectUrl)
   }
 }

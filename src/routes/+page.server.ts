@@ -7,7 +7,8 @@ export const load = (async () => {
       id: true,
       occurredAt: true,
       latitude: true,
-      longitude: true
+      longitude: true,
+      transportationMode: true
     }
   })
 

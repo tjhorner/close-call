@@ -17,6 +17,7 @@ section {
   display: flex;
   flex-direction: column;
   gap: 0.75em;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 section p, section h2, section .warning {
@@ -38,7 +39,7 @@ h2 {
   width: 100%;
 }
 
-p {
+p, ul, ol {
   line-height: 1.5;
 }
 
@@ -68,9 +69,11 @@ a.button, label.button {
   text-decoration: none;
 }
 
-input[type="text"], input[type="email"], input[type="password"], textarea{
+input[type="text"], input[type="email"], input[type="datetime-local"], textarea {
   padding: 10px;
   font-size: 1.2em;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -80,7 +83,7 @@ input[type="text"], input[type="email"], input[type="password"], textarea{
   }
 
   button, label.button {
-    background-color: #333;
+    background-color: #535353;
     color: white;
   }
 

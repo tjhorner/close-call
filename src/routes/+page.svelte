@@ -3,8 +3,18 @@
   import type { PageData } from "./$types"
   import type { FeatureCollection } from "geojson"
   import { onMount } from "svelte"
+  import maplibregl from "maplibre-gl"
+  import { TransportationMode } from "@prisma/client"
 
   export let data: PageData
+
+  const transportationModeEmojis = {
+    [TransportationMode.WALKING]: "🚶",
+    [TransportationMode.BICYCLE]: "🚲",
+    [TransportationMode.WHEELCHAIR]: "🧑‍🦽",
+    [TransportationMode.SCOOTER]: "🛴",
+    [TransportationMode.OTHER]: "❓"
+  }
 
   const reports: FeatureCollection = {
     type: "FeatureCollection",
@@ -15,19 +25,90 @@
         coordinates: [report.longitude, report.latitude]
       },
       properties: {
-        title: report.occurredAt.toLocaleString()
+        title: report.occurredAt.toLocaleString(),
+        transportationMode: report.transportationMode,
+        emoji: transportationModeEmojis[report.transportationMode]
       }
     }))
   }
+
+  const bounds = data.reports.reduce((bounds, report) => {
+    return bounds.extend([report.longitude, report.latitude])
+  }, new maplibregl.LngLatBounds())
 
   onMount(() => {
     console.log(reports)
   })
 </script>
 
+<style>
+  .overlay-buttons {
+    z-index: 999;
+    display: flex;
+    position: fixed;
+    gap: 15px;
+    pointer-events: none;
+  }
+
+  .overlay-buttons.top-right {
+    top: 0;
+    right: 0;
+    flex-direction: row;
+    padding: 20px;
+  }
+
+  .overlay-buttons.bottom-center {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 3em;
+  }
+
+  .round-button {
+    width: fit-content;
+    pointer-events: auto;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0070e8;
+    color: white;
+    border-radius: 40px;
+    text-decoration: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: transform 0.1s ease;
+  }
+
+  .round-button:active {
+    transform: scale(0.95);
+  }
+
+  .round-button.big {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  .round-button.gray {
+    background-color: #797979;
+  }
+</style>
+
+<div class="overlay-buttons bottom-center">
+  <a href="/report" class="round-button big">
+    ❕ Report Close Call
+  </a>
+</div>
+
+<div class="overlay-buttons top-right">
+  <a href="/about" class="round-button gray">
+    About
+  </a>
+</div>
+
 <MapLibre
+  {bounds}
   standardControls
-  style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json">
+  style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json">
 
   <GeoJSON
     data={reports}
@@ -39,15 +120,9 @@
     <CircleLayer
       id="cluster_circles"
       applyToClusters
-      hoverCursor="pointer"
       paint={{
-        // Use step expressions (https://maplibre.org/maplibre-gl-js-docs/style-spec/#expressions-step)
-        // with three steps to implement three types of circles:
-        //   * Blue, 20px circles when point count is less than 100
-        //   * Yellow, 30px circles when point count is between 100 and 750
-        //   * Pink, 40px circles when point count is greater than or equal to 750
-        'circle-color': ['step', ['get', 'point_count'], '#51bbd6', 100, '#f1f075', 750, '#f28cb1'],
-        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
+        'circle-color': ['step', ['get', 'point_count'], '#51bbd6', 10, '#f1f075', 20, '#f28cb1'],
+        'circle-radius': ['step', ['get', 'point_count'], 20, 10, 30, 20, 40],
         'circle-stroke-width': 1,
         'circle-stroke-opacity': 1,
       }}
@@ -69,12 +144,12 @@
     />
 
     <CircleLayer
-      id="earthquakes_circle"
+      id="reports_circle"
       applyToClusters={false}
       hoverCursor="pointer"
       paint={{
         'circle-color': '#11b4da',
-        'circle-radius': 4,
+        'circle-radius': 6,
         'circle-stroke-width': 1,
         'circle-stroke-color': '#fff',
       }}

@@ -6,7 +6,7 @@
   export let name: string
   export let value: { lat: number, lng: number } = { lat: 0, lng: 0 }
 
-  const geolocationAvailable = "geolocation" in navigator
+  let geolocationAvailable = false
 
   let basemap = "positron"
 
@@ -50,6 +50,8 @@
   }
 
   onMount(() => {
+    geolocationAvailable = "geolocation" in navigator
+
     map.setCenter(value)
     map.setZoom(10)
 

@@ -3,16 +3,40 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model CloseCallReport {
-  id                 String   @id @default(uuid())
+  id                 String             @id @default(uuid())
+  reportedAt         DateTime           @default(now())
   occurredAt         DateTime
   latitude           Float
   longitude          Float
-  transportationMode String
+  transportationMode TransportationMode
   description        String
   emailAddress       String?
+
+  jurisdiction   Jurisdiction? @relation(fields: [jurisdictionId], references: [id])
+  jurisdictionId String?
+}
+
+enum TransportationMode {
+  WALKING
+  BICYCLE
+  WHEELCHAIR
+  SCOOTER
+  OTHER
+}
+
+model Jurisdiction {
+  id                         String  @id @default(uuid())
+  name                       String
+  stateName                  String?
+  gnisId                     String  @unique
+  wikidataId                 String? @unique
+  serviceRequestUrl          String?
+  serviceRequestInstructions String?
+
+  reports CloseCallReport[]
 }

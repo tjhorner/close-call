@@ -1,4 +1,4 @@
 node_modules
 .svelte-kit
 .env
-dev.db
+prisma/dev-db-data

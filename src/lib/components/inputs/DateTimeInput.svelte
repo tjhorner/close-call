@@ -28,8 +28,6 @@
 <style>
   input {
     appearance: none;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     font-size: 1.5em;
     width: 100%;
     padding: 10px;

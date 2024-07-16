@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Bellevue",
+    "gnisId": "2409821",
+    "stateName": "Washington",
+    "wikidataId": "Q214164",
+    "serviceRequestUrl": "https://bellevuewa.gov/city-government/departments/finance/mybellevue/customer-assistance",
+    "serviceRequestInstructions": "Choose the \"Traffic Concerns\" category."
+  },
+  {
+    "name": "Redmond",
+    "gnisId": "2411534",
+    "stateName": "Washington",
+    "wikidataId": "Q223718",
+    "serviceRequestUrl": "https://redmondwa.qscend.com/311/",
+    "serviceRequestInstructions": "Enter the incident location and choose the \"Roadway Safety\" category."
+  },
+  {
+    "name": "Kirkland",
+    "gnisId": "2411552",
+    "stateName": "Washington",
+    "wikidataId": "Q936768",
+    "serviceRequestUrl": "https://kirklandwa.qscend.com/ourkirkland/",
+    "serviceRequestInstructions": "Enter the incident location and choose the \"Other\" category."
+  },
+  {
+    "name": "Seattle",
+    "gnisId": "2411856",
+    "stateName": "Washington",
+    "wikidataId": "Q5083",
+    "serviceRequestUrl": "https://seattle-cwiprod.motorolasolutions.com/cwi/select",
+    "serviceRequestInstructions": "Choose the \"General Inquiry - Transportation\" category."
+  },
+  {
+    "name": "Mercer Island",
+    "stateName": "Washington",
+    "gnisId": "2411082",
+    "wikidataId": "Q954095",
+    "serviceRequestUrl": "https://www.mercerisland.gov/publicworks/page/submit-service-request"
+  },
+  {
+    "name": "Bothell",
+    "stateName": "Washington",
+    "gnisId": "2409882",
+    "wikidataId": "Q303046",
+    "serviceRequestUrl": "https://www.bothellwa.gov/FormCenter/customer-action-request-12/customer-action-request-68"
+  },
+  {
+    "name": "Issaquah",
+    "stateName": "Washington",
+    "gnisId": "2410123",
+    "wikidataId": "Q40251",
+    "serviceRequestUrl": "https://www.issaquahwa.gov/Request"
+  },
+  {
+    "name": "Woodinville",
+    "stateName": "Washington",
+    "gnisId": "2412298",
+    "wikidataId": "Q986378",
+    "serviceRequestUrl": "https://www.ci.woodinville.wa.us/240/Report-an-Issue"
+  }
+]
