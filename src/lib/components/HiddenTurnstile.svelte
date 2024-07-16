@@ -12,7 +12,7 @@
 </style>
 
 <Turnstile
-  siteKey={"3x00000000000000000000FF"}
+  siteKey={PUBLIC_TURNSTILE_SITE_KEY}
   appearance="interaction-only"
   on:before-interactive={() => show = true}
   on:after-interactive={() => show = false}
