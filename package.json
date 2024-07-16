@@ -12,7 +12,7 @@
 		"prisma:migrate": "prisma migrate deploy && npm run prisma:inline",
 		"prisma:migrate:dev": "prisma migrate dev && npm run prisma:inline",
 		"prisma:generate": "prisma generate && npm run prisma:inline",
-		"vercel-build": "npm run prisma:generate && prisma migrate deploy && npm run prisma:inline && vite build"
+		"vercel-build": "prisma generate && prisma migrate deploy && npm run prisma:inline && vite build"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",

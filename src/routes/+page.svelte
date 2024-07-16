@@ -4,17 +4,8 @@
   import type { FeatureCollection } from "geojson"
   import { onMount } from "svelte"
   import maplibregl from "maplibre-gl"
-  import { TransportationMode } from "@prisma/client"
 
   export let data: PageData
-
-  const transportationModeEmojis = {
-    [TransportationMode.WALKING]: "🚶",
-    [TransportationMode.BICYCLE]: "🚲",
-    [TransportationMode.WHEELCHAIR]: "🧑‍🦽",
-    [TransportationMode.SCOOTER]: "🛴",
-    [TransportationMode.OTHER]: "❓"
-  }
 
   const reports: FeatureCollection = {
     type: "FeatureCollection",
@@ -26,8 +17,6 @@
       },
       properties: {
         title: report.occurredAt.toLocaleString(),
-        transportationMode: report.transportationMode,
-        emoji: transportationModeEmojis[report.transportationMode]
       }
     }))
   }
