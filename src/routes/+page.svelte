@@ -23,7 +23,7 @@
 
   const bounds = data.reports.reduce((bounds, report) => {
     return bounds.extend([report.longitude, report.latitude])
-  }, new maplibregl.LngLatBounds())
+  }, new maplibregl.LngLatBounds([0, 0]))
 
   onMount(() => {
     console.log(reports)
