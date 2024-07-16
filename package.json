@@ -26,6 +26,7 @@
 	"dependencies": {
 		"@prisma/client": "^5.16.2",
 		"arktype": "^2.0.0-dev.29",
-		"svelte-maplibre": "^0.9.9"
+		"svelte-maplibre": "^0.9.9",
+		"svelte-turnstile": "^0.7.1"
 	}
 }

@@ -6,6 +6,9 @@
   import PinDropInput from "$lib/components/inputs/PinDropInput.svelte"
   import TextareaInput from "$lib/components/inputs/TextareaInput.svelte"
   import Warning from "$lib/components/Warning.svelte"
+  import { Turnstile } from "svelte-turnstile"
+  import { PUBLIC_TURNSTILE_SITE_KEY } from "$env/static/public"
+  import HiddenTurnstile from "$lib/components/HiddenTurnstile.svelte"
 
   export let form: ActionData
 
@@ -135,6 +138,8 @@
           ✅ Submit Report
         {/if}
       </button>
+
+      <HiddenTurnstile />
 
       <p>
         By submitting a close call report, you understand that it will be

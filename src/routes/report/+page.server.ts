@@ -1,3 +1,4 @@
+import { TURNSTILE_SECRET_KEY } from "$env/static/private"
 import { queryOverpass } from "$lib/overpass.js"
 import prisma from "$lib/prisma.js"
 import { fail, redirect } from "@sveltejs/kit"
@@ -59,6 +60,14 @@ async function getJurisdictionId(lat: number, lng: number): Promise<string | nul
 export const actions = {
   default: async ({ request }) => {
     const data = await request.formData()
+
+    const turnstileToken = getStringValue(data, "cf-turnstile-response")
+    const { success } = await validateToken(turnstileToken, TURNSTILE_SECRET_KEY)
+    if (!success) {
+      return fail(403, {
+        errorSummary: "Failed to validate CAPTCHA. Please try again."
+      })
+    }
 
     const reportData = reportForm({
       latitude: parseFloat(getStringValue(data, "location.latitude")),

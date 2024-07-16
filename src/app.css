@@ -54,8 +54,12 @@ button, a.button, label.button {
   transition: background-color 0.1s ease, transform 0.1s ease;
 }
 
-button:active, a.button:active, label.button:active {
+button:not(:disabled):active, a.button:active, label.button:active {
   transform: scale(0.95);
+}
+
+button:disabled {
+  opacity: 0.5;
 }
 
 button.selected, label.button.selected {
