@@ -99,7 +99,7 @@
 <MapLibre
   {bounds}
   standardControls
-  style="https://styles.trailsta.sh/openmaptiles-osm.json">
+  style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json">
 
   <GeoJSON
     data={reports}
