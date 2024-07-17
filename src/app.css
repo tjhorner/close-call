@@ -8,6 +8,11 @@ html, body {
   box-sizing: border-box;
 }
 
+:root {
+  --blue: #1776dd;
+  --bright-blue: #4d9ff2;
+}
+
 section {
   background: #f5f5f5;
   padding: 20px;
@@ -63,12 +68,12 @@ button:disabled {
 }
 
 button.selected, label.button.selected {
-  background-color: #0070e8;
+  background-color: var(--blue);
   color: white;
 }
 
 a {
-  color: #0070e8;
+  color: var(--blue);
 }
 
 a.button, label.button {
@@ -96,11 +101,15 @@ input[type="text"], input[type="email"], input[type="datetime-local"], textarea 
   }
 
   button.selected {
-    background-color: #0070e8;
+    background-color: var(--blue);
   }
 
   section {
     background: #272727;
+  }
+
+  a {
+    color: var(--bright-blue);
   }
 }
 

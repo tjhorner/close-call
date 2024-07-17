@@ -8,8 +8,6 @@
 
   let geolocationAvailable = false
 
-  let basemap = "positron"
-
   let map: maplibregl.Map
   let gettingLocation = false
   let locationError = false
@@ -41,30 +39,19 @@
     })
   }
 
-  function darkModeSwitched(e: { matches: boolean }) {
-    if (e.matches) {
-      basemap = "dark-matter"
-    } else {
-      basemap = "positron"
-    }
-  }
-
   onMount(() => {
     geolocationAvailable = "geolocation" in navigator
 
     map.setCenter(value)
     map.setZoom(10)
-
-    const mql = window.matchMedia("(prefers-color-scheme: dark)")
-    mql.onchange = darkModeSwitched
-    darkModeSwitched(mql)
   })
 </script>
 
 <style>
-  :global(.map) {
+  :global(.pin-drop-map) {
     height: 250px;
     margin-top: 10px;
+    border-radius: 5px;
   }
 
   button {
@@ -92,11 +79,10 @@
   bind:map={map}
   standardControls
   attributionControl={false}
-  style="https://basemaps.cartocdn.com/gl/{basemap}-gl-style/style.json"
-  class="map">
+  style="https://styles.trailsta.sh/openmaptiles-osm.json"
+  class="pin-drop-map">
 
-  <AttributionControl
-    compact />
+  <AttributionControl compact />
 
   <DefaultMarker
     bind:lngLat={value}

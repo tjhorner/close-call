@@ -16,4 +16,4 @@
   appearance="interaction-only"
   on:before-interactive={() => show = true}
   on:after-interactive={() => show = false}
-  class="{show ? "" : "hidden-turnstile"}" />
+  class={show ? "" : "hidden-turnstile"} />

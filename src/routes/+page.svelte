@@ -62,7 +62,7 @@
     pointer-events: auto;
     display: inline-block;
     padding: 10px 20px;
-    background-color: #0070e8;
+    background-color: var(--blue);
     color: white;
     border-radius: 40px;
     text-decoration: none;
@@ -99,7 +99,7 @@
 <MapLibre
   {bounds}
   standardControls
-  style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json">
+  style="https://styles.trailsta.sh/openmaptiles-osm.json">
 
   <GeoJSON
     data={reports}
