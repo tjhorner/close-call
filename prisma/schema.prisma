@@ -14,11 +14,21 @@ model CloseCallReport {
   latitude           Float
   longitude          Float
   transportationMode TransportationMode
-  description        String
+  description        String?
   emailAddress       String?
+  submitterIpAddress String?
+
+  incidentFactors IncidentFactor[]
 
   jurisdiction   Jurisdiction? @relation(fields: [jurisdictionId], references: [id])
   jurisdictionId String?
+}
+
+model IncidentFactor {
+  id               String @id @default(uuid())
+  shortDescription String
+
+  reports CloseCallReport[]
 }
 
 enum TransportationMode {

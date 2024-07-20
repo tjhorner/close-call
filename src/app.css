@@ -67,9 +67,15 @@ button:disabled {
   opacity: 0.5;
 }
 
-button.selected, label.button.selected {
+button.selected,
+label.button.selected,
+label.button:has(input:checked) {
   background-color: var(--blue);
   color: white;
+}
+
+label.button:has(input:focus) {
+  outline: 2px solid var(--blue);
 }
 
 a {

@@ -36,6 +36,7 @@
 </style>
 
 <input
+  {...$$restProps}
   bind:this={inputElement}
   type="datetime-local"
   on:change={(e) => updateSelectedDate(e.currentTarget.value)} />

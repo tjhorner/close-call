@@ -14,4 +14,4 @@
   }
 </style>
 
-<textarea bind:value {required} {name} />
+<textarea {...$$restProps} bind:value {required} {name} />

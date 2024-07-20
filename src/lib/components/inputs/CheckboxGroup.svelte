@@ -4,9 +4,7 @@
     value: string
   }[] = []
 
-  export let name: string
-  export let value: string | undefined = undefined
-  export let required = false
+  export let groupName: string
 </script>
 
 <style>
@@ -32,7 +30,7 @@
   }
 
   /* hacky stuff to use browser native form validation */
-  input[type="radio"] {
+  input[type="checkbox"] {
     z-index: -999;
     height: 1px;
     width: 1px;
@@ -46,14 +44,16 @@
 
 <div class="options">
   {#each options as option}
+    {@const name = `${groupName}.${option.value}`}
+
     <label
       class="button"
+      for={name}
     >
       <input
-        type="radio"
-        {name} {required}
-        bind:group={value}
-        value={option.value}
+        type="checkbox"
+        id={name}
+        {name}
       />
 
       {option.label}

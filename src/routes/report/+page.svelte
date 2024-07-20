@@ -1,15 +1,15 @@
 <script lang="ts">
-  import type { ActionData } from "./$types"
+  import type { ActionData, PageData } from "./$types"
   import { enhance } from "$app/forms"
   import DateTimeInput from "$lib/components/inputs/DateTimeInput.svelte"
   import MultipleChoiceInput from "$lib/components/inputs/MultipleChoiceInput.svelte"
   import PinDropInput from "$lib/components/inputs/PinDropInput.svelte"
   import TextareaInput from "$lib/components/inputs/TextareaInput.svelte"
   import Warning from "$lib/components/Warning.svelte"
-  import { Turnstile } from "svelte-turnstile"
-  import { PUBLIC_TURNSTILE_SITE_KEY } from "$env/static/public"
   import HiddenTurnstile from "$lib/components/HiddenTurnstile.svelte"
+  import CheckboxGroup from "$lib/components/inputs/CheckboxGroup.svelte"
 
+  export let data: PageData
   export let form: ActionData
 
   let transportationMode = ""
@@ -58,7 +58,9 @@
         It doesn't need to be exact.
       </p>
 
-      <DateTimeInput name="time" />
+      <DateTimeInput
+        name="time"
+        aria-label="Time of incident" />
     </section>
 
     <section class="transportation-mode">
@@ -102,10 +104,24 @@
       <h2>📝 What happened?</h2>
 
       <p>
-        Please provide a brief description of the incident.
+        Select any factors that apply to this incident.
       </p>
 
-      <TextareaInput name="description" required />
+      <CheckboxGroup
+        groupName="incidentFactors"
+        options={data.incidentFactors.map(({ id, shortDescription }) => ({
+          value: id,
+          label: shortDescription
+        }))} />
+
+      <p>
+        You can also optionally describe the incident in more detail below.
+      </p>
+
+      <TextareaInput
+        aria-label="Additional incident details"
+        placeholder="Example: I was crossing Sesame St at the northwestern corner when a car ran the red light and nearly hit me."
+        name="description" />
     </section>
 
     <section class="contact">
@@ -120,7 +136,8 @@
         name="email"
         class="full-width"
         type="email"
-        placeholder="me@domain.com" />
+        aria-label="Contact email"
+        placeholder="you@domain.com" />
     </section>
 
     <section class="submit">

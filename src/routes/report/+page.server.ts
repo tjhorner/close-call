@@ -1,8 +1,10 @@
 import { TURNSTILE_SECRET_KEY } from "$env/static/private"
-import { queryOverpass } from "$lib/overpass.js"
-import prisma from "$lib/prisma.js"
+import { queryOverpass } from "$lib/overpass"
+import prisma from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import { type } from "arktype"
+import type { PageServerLoad } from "./$types"
+import { validateToken } from "$lib/turnstile"
 
 function getStringValue(form: FormData, key: string): string {
   const value = form.get(key)
@@ -18,7 +20,7 @@ const reportForm = type({
   longitude: "-180<number<180",
   occurredAt: "parse.date",
   transportationMode: "'WALKING' | 'BICYCLE' | 'WHEELCHAIR' | 'SCOOTER' | 'OTHER'",
-  description: "string>0",
+  description: "string",
   emailAddress: "email | ''"
 })
 
@@ -57,8 +59,38 @@ async function getJurisdictionId(lat: number, lng: number): Promise<string | nul
   return jurisdiction.id
 }
 
+async function getSelectedIncidentFactors(form: FormData): Promise<string[]> {
+  const possibleFactors = await prisma.incidentFactor.findMany({
+    select: { id: true }
+  })
+
+  const selectedFactors: string[] = []
+
+  for (const factor of possibleFactors) {
+    const value = form.get(`incidentFactors.${factor.id}`)
+    if (value === "on") {
+      selectedFactors.push(factor.id)
+    }
+  }
+
+  return selectedFactors
+}
+
+export const load: PageServerLoad = async () => {
+  const incidentFactors = await prisma.incidentFactor.findMany({
+    select: {
+      id: true,
+      shortDescription: true
+    }
+  })
+
+  return {
+    incidentFactors
+  }
+}
+
 export const actions = {
-  default: async ({ request }) => {
+  default: async ({ request, getClientAddress }) => {
     const data = await request.formData()
 
     const turnstileToken = getStringValue(data, "cf-turnstile-response")
@@ -90,10 +122,16 @@ export const actions = {
     } catch (error) {
       console.error("Failed to get jurisdiction ID", error)
     }
+
+    const selectedIncidentFactors = await getSelectedIncidentFactors(data)
   
     await prisma.closeCallReport.create({
       data: {
         jurisdictionId,
+        submitterIpAddress: getClientAddress(),
+        incidentFactors: {
+          connect: selectedIncidentFactors.map(id => ({ id }))
+        },
         ...reportData
       }
     })

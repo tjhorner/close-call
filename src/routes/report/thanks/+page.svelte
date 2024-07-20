@@ -38,7 +38,7 @@
         <li>
           Search for
           <a
-            href={`https://google.com/search?q=${encodeURIComponent(`${data.jurisdiction.name} ${data.jurisdiction.stateName}`.trim())}+service+request`}
+            href={`https://google.com/search?q=${encodeURIComponent(`${data.jurisdiction.name} ${data.jurisdiction.stateName ?? ""}`.trim())}+service+request`}
             target="_blank"
             rel="noopener noreferer"
           >{data.jurisdiction.name}'s service request portal</a>.

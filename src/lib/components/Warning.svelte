@@ -32,6 +32,6 @@
   }
 </style>
 
-<div class="warning {color}">
+<div class="warning {color}" role="alert">
   <slot />
 </div>
