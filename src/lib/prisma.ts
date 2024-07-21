@@ -5,7 +5,12 @@ import { createPrismaRedisCache } from "prisma-redis-middleware"
 const prisma = new PrismaClient()
 
 if (process.env.REDIS_URL) {
-  const redis = new Redis(process.env.REDIS_URL)
+  let redisUrl = process.env.REDIS_URL
+  if (process.env.REDIS_FORCE_TLS) {
+    redisUrl = redisUrl.replace(/^redis:\/\//, "rediss://")
+  }
+
+  const redis = new Redis(redisUrl)
 
   const cacheMiddleware: Prisma.Middleware = createPrismaRedisCache({
     models: [
