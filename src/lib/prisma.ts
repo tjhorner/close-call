@@ -16,7 +16,7 @@ if (process.env.REDIS_URL) {
     models: [
       { model: "Jurisdiction" },
       { model: "CloseCallReport" },
-      { model: "IncidentFactors", cacheTime: 3600 }
+      { model: "IncidentFactor", cacheTime: 3600 }
     ],
     storage: {
       type: "redis",
