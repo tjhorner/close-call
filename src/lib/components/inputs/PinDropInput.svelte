@@ -1,7 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte"
-  import { AttributionControl, DefaultMarker, MapLibre, type LngLatLike } from "svelte-maplibre"
+  import { AttributionControl, DefaultMarker, MapLibre } from "svelte-maplibre"
   import Warning from "../Warning.svelte"
+  import GoogleMapsAutocomplete from "../GoogleMapsAutocomplete.svelte"
+  import { PUBLIC_GOOGLE_MAPS_API_KEY as googleMapsApiKey } from "$env/static/public"
 
   export let name: string
   export let value: { lat: number, lng: number } = { lat: 0, lng: 0 }
@@ -21,15 +23,9 @@
     navigator.geolocation.getCurrentPosition((position) => {
       gettingLocation = false
 
-      value = {
+      setLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      }
-      
-      map.flyTo({
-        center: [value.lng, value.lat],
-        zoom: 15,
-        speed: 2
       })
     }, (error) => {
       gettingLocation = false
@@ -47,6 +43,16 @@
     } else {
       basemap = "positron"
     }
+  }
+
+  function setLocation(location: { lat: number, lng: number }) {
+    value = location
+    
+    map.flyTo({
+      center: [value.lng, value.lat],
+      zoom: 15,
+      speed: 2
+    })
   }
 
   onMount(() => {
@@ -71,23 +77,57 @@
   button {
     width: 100%;
   }
+
+  .separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+
+  .separator::before,
+  .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--muted);
+  }
+
+  .separator:not(:empty)::before {
+    margin-right: 1em;
+  }
+
+  .separator:not(:empty)::after {
+    margin-left: 1em;
+  }
 </style>
 
 {#if geolocationAvailable}
-  <button on:click|preventDefault={setToCurrentLocation} disabled={gettingLocation}>
+  {#if locationError}
+    <Warning color="yellow">
+      Unable to obtain current location. Please drag the pin manually.
+    </Warning>
+  {/if}
+
+  <button on:click|preventDefault={setToCurrentLocation} type="button" disabled={gettingLocation}>
     {#if gettingLocation}
       Finding your location...
     {:else}
-      📍 Use my current location
+      🗺️ Use my current location
     {/if}
   </button>
+
+  <label class="separator" for="locationAutocomplete">
+    Or search for a location, like a cross street:
+  </label>
+{:else}
+  <label for="locationAutocomplete">
+    Search below for a location, like a cross street.
+  </label>
 {/if}
 
-{#if locationError}
-  <Warning color="yellow">
-    Unable to obtain current location. Please drag the pin manually.
-  </Warning>
-{/if}
+<GoogleMapsAutocomplete
+  apiKey={googleMapsApiKey}
+  id="locationAutocomplete"
+  on:placeSelected={({ detail }) => setLocation(detail)} />
 
 <MapLibre
   bind:map={map}
@@ -100,6 +140,7 @@
     compact />
 
   <DefaultMarker
+    offset={[0, -20]}
     bind:lngLat={value}
     draggable />
 </MapLibre>

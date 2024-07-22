@@ -11,6 +11,7 @@ html, body {
 :root {
   --blue: #1776dd;
   --bright-blue: #4d9ff2;
+  --muted: #c1c1c1;
 }
 
 section {
@@ -96,6 +97,10 @@ input[type="text"], input[type="email"], input[type="datetime-local"], textarea 
 }
 
 @media (prefers-color-scheme: dark) {
+  :root {
+    --muted: #4b4b4b;
+  }
+
   body {
     background-color: #1a1a1a;
     color: white;
