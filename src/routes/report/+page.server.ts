@@ -28,15 +28,23 @@ async function getJurisdictionId(lat: number, lng: number): Promise<string | nul
   const boundaryResults = await queryOverpass(
     `[timeout:10][out:json];
     is_in(${lat},${lng})->.a;
-    relation["boundary"="administrative"]["admin_level"="8"](pivot.a);
+    relation["boundary"="administrative"]["admin_level"~"8|4"](pivot.a);
     out tags;`
   )
 
-  if (boundaryResults.elements.length === 0) {
+  const elements = boundaryResults.elements
+  if (elements.length === 0) {
     return null
   }
 
-  const jurisdictionTags = boundaryResults.elements[0].tags
+  const city = elements.find((element) => element.tags["admin_level"] === "8")
+  if (!city) {
+    return null
+  }
+
+  const state = elements.find((element) => element.tags["admin_level"] === "4")
+
+  const jurisdictionTags = city.tags
   const gnisId = jurisdictionTags["gnis:feature_id"]
 
   if (!gnisId) {
@@ -50,7 +58,7 @@ async function getJurisdictionId(lat: number, lng: number): Promise<string | nul
     update: { },
     create: {
       name: jurisdictionTags["name"] ?? "Unknown",
-      stateName: jurisdictionTags["is_in:state"] ?? null,
+      stateName: state?.tags["ref"] ?? jurisdictionTags["is_in:state"] ?? null,
       wikidataId: jurisdictionTags["wikidata"] ?? null,
       gnisId
     }

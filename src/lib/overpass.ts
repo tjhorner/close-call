@@ -1,4 +1,14 @@
-export async function queryOverpass<T = any>(query: string) {
+export interface OverpassResponse {
+  elements: OverpassElement[]
+}
+
+export interface OverpassElement {
+  type: string
+  id: number
+  tags: { [key: string]: string }
+}
+
+export async function queryOverpass(query: string) {
   const response = await fetch("https://overpass-api.de/api/interpreter", {
     method: "POST",
     headers: {
@@ -11,5 +21,5 @@ export async function queryOverpass<T = any>(query: string) {
     throw new Error(`Failed to query Overpass API: ${response.statusText}`)
   }
 
-  return response.json() as T
+  return response.json() as Promise<OverpassResponse>
 }
