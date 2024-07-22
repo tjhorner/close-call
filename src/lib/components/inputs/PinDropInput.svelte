@@ -92,11 +92,11 @@
   }
 
   .separator:not(:empty)::before {
-    margin-right: 1em;
+    margin-right: 0.5em;
   }
 
   .separator:not(:empty)::after {
-    margin-left: 1em;
+    margin-left: 0.5em;
   }
 </style>
 

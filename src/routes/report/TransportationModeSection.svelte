@@ -18,15 +18,15 @@
         value: "walking"
       },
       {
-        label: "🚲 Biking",
+        label: "🚲 Bike",
         value: "bicycle"
       },
       {
-        label: "🧑‍🦽 Rolling",
+        label: "🧑‍🦽 Wheelchair",
         value: "wheelchair"
       },
       {
-        label: "🛴 Scooting",
+        label: "🛴 Scooter",
         value: "scooter"
       },
       {
