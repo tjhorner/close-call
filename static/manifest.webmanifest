@@ -1,6 +1,7 @@
 {
   "name": "Report Close Call",
   "start_url": "/report",
+  "scope": "/report",
   "display": "standalone",
   "theme_color": "#1a1a1a"
 }
