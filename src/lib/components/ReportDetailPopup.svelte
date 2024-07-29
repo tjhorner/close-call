@@ -19,11 +19,11 @@
   }
 
   const transportationModeDisplay = {
-    [TransportationMode.BICYCLE]: "🚲 Bike",
-    [TransportationMode.WALKING]: "🚶 Walking",
-    [TransportationMode.SCOOTER]: "🛴 Scooter",
-    [TransportationMode.WHEELCHAIR]: "🧑‍🦽 Wheelchair",
-    [TransportationMode.OTHER]: "❓ Other"
+    BICYCLE: "🚲 Bike",
+    WALKING: "🚶 Walking",
+    SCOOTER: "🛴 Scooter",
+    WHEELCHAIR: "🧑‍🦽 Wheelchair",
+    OTHER: "❓ Other"
   }
 </script>
 
