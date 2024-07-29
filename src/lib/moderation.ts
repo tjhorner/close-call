@@ -2,7 +2,6 @@ import OpenAI from "openai"
 import { env } from "$env/dynamic/private"
 import BadWordsFilter from "bad-words"
 
-const openai = new OpenAI()
 const badWordsFilter = new BadWordsFilter()
 
 export async function isTextInappropriate(text: string): Promise<boolean> {
@@ -11,6 +10,8 @@ export async function isTextInappropriate(text: string): Promise<boolean> {
   }
 
   if (env.OPENAI_API_KEY) {
+    const openai = new OpenAI()
+
     const moderationResult = await openai.moderations.create({
       input: text
     })
