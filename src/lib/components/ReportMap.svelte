@@ -4,6 +4,7 @@
   import type { FeatureCollection, Feature, Point } from "geojson"
   import maplibregl from "maplibre-gl"
   import ReportDetailPopup from "./ReportDetailPopup.svelte"
+  import { onMount } from "svelte"
 
   export let reports: {
     occurredAt: Date
@@ -12,6 +13,8 @@
     transportationMode: TransportationMode
     incidentFactors: string[]
   }[]
+
+  let map: maplibregl.Map
 
   let clickedFeature: Feature | undefined = undefined
   $: popupLocation = (clickedFeature?.geometry as Point)?.coordinates as [number, number] | undefined
@@ -32,15 +35,26 @@
     }))
   }
 
-  const bounds = reports.length
+  $: bounds = reports.length
     ? reports.reduce((bounds, report) => {
         return bounds.extend([report.longitude, report.latitude])
       }, new maplibregl.LngLatBounds())
     : undefined
+  
+  onMount(() => {
+    if (bounds) {
+      map.once("load", () => {
+        map.fitBounds(bounds, {
+          padding: 70,
+          duration: 0
+        })
+      })
+    }
+  })
 </script>
 
 <MapLibre
-  {bounds}
+  bind:map={map}
   standardControls
   style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json">
 
