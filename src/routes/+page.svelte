@@ -1,35 +1,8 @@
 <script lang="ts">
-  import { MapLibre, GeoJSON, CircleLayer, SymbolLayer } from "svelte-maplibre"
+  import ReportMap from "$lib/components/ReportMap.svelte"
   import type { PageData } from "./$types"
-  import type { FeatureCollection } from "geojson"
-  import { onMount } from "svelte"
-  import maplibregl from "maplibre-gl"
 
   export let data: PageData
-
-  const reports: FeatureCollection = {
-    type: "FeatureCollection",
-    features: data.reports.map((report) => ({
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [report.longitude, report.latitude]
-      },
-      properties: {
-        title: report.occurredAt.toLocaleString(),
-      }
-    }))
-  }
-
-  const bounds = data.reports.length
-    ? data.reports.reduce((bounds, report) => {
-        return bounds.extend([report.longitude, report.latitude])
-      }, new maplibregl.LngLatBounds())
-    : undefined
-
-  onMount(() => {
-    console.log(reports)
-  })
 </script>
 
 <style>
@@ -96,54 +69,4 @@
   </a>
 </div>
 
-<MapLibre
-  {bounds}
-  standardControls
-  style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json">
-
-  <GeoJSON
-    data={reports}
-    cluster={{
-      radius: 500,
-      maxZoom: 14
-    }}
-  >
-    <CircleLayer
-      id="cluster_circles"
-      applyToClusters
-      paint={{
-        'circle-color': ['step', ['get', 'point_count'], '#51bbd6', 10, '#f1f075', 20, '#f28cb1'],
-        'circle-radius': ['step', ['get', 'point_count'], 20, 10, 30, 20, 40],
-        'circle-stroke-width': 1,
-        'circle-stroke-opacity': 1,
-      }}
-      manageHoverState
-    />
-
-    <SymbolLayer
-      id="cluster_labels"
-      interactive={false}
-      applyToClusters
-      layout={{
-        'text-field': [
-          'format',
-          ['get', 'point_count_abbreviated'],
-        ],
-        'text-size': 12,
-        'text-offset': [0, -0.1],
-      }}
-    />
-
-    <CircleLayer
-      id="reports_circle"
-      applyToClusters={false}
-      hoverCursor="pointer"
-      paint={{
-        'circle-color': '#11b4da',
-        'circle-radius': 6,
-        'circle-stroke-width': 1,
-        'circle-stroke-color': '#fff',
-      }}
-    />
-  </GeoJSON>
-</MapLibre>
+<ReportMap reports={data.reports} />

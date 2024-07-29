@@ -136,8 +136,7 @@
   style="https://basemaps.cartocdn.com/gl/{basemap}-gl-style/style.json"
   class="map">
 
-  <AttributionControl
-    compact />
+  <AttributionControl compact />
 
   <DefaultMarker
     offset={[0, -20]}

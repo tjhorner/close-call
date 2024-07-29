@@ -8,7 +8,13 @@ export const load = (async () => {
       occurredAt: true,
       latitude: true,
       longitude: true,
-      transportationMode: true
+      transportationMode: true,
+      description: true,
+      incidentFactors: {
+        select: {
+          shortDescription: true
+        }
+      }
     }
   })
 

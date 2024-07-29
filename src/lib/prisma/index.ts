@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client"
 import { Redis } from "ioredis"
 import { createPrismaRedisCache } from "prisma-redis-middleware"
+import { addJurisdictionExtensions } from "./jurisdiction"
 
 const prisma = new PrismaClient()
 
@@ -33,4 +34,4 @@ if (process.env.REDIS_URL) {
   prisma.$use(cacheMiddleware)
 }
 
-export default prisma
+export default addJurisdictionExtensions(prisma)

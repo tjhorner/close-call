@@ -1,5 +1,4 @@
 import { TURNSTILE_SECRET_KEY } from "$env/static/private"
-import { queryOverpass } from "$lib/overpass"
 import prisma from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import { type } from "arktype"
@@ -23,49 +22,6 @@ const reportForm = type({
   description: "string",
   emailAddress: "email | ''"
 })
-
-async function getJurisdictionId(lat: number, lng: number): Promise<string | null> {
-  const boundaryResults = await queryOverpass(
-    `[timeout:10][out:json];
-    is_in(${lat},${lng})->.a;
-    relation["boundary"="administrative"]["admin_level"~"8|4"](pivot.a);
-    out tags;`
-  )
-
-  const elements = boundaryResults.elements
-  if (elements.length === 0) {
-    return null
-  }
-
-  const city = elements.find((element) => element.tags["admin_level"] === "8")
-  if (!city) {
-    return null
-  }
-
-  const state = elements.find((element) => element.tags["admin_level"] === "4")
-
-  const jurisdictionTags = city.tags
-  const gnisId = jurisdictionTags["gnis:feature_id"]
-
-  if (!gnisId) {
-    return null
-  }
-
-  const jurisdiction = await prisma.jurisdiction.upsert({
-    where: {
-      gnisId
-    },
-    update: { },
-    create: {
-      name: jurisdictionTags["name"] ?? "Unknown",
-      stateName: state?.tags["ref"] ?? jurisdictionTags["is_in:state"] ?? null,
-      wikidataId: jurisdictionTags["wikidata"] ?? null,
-      gnisId
-    }
-  })
-
-  return jurisdiction.id
-}
 
 async function getSelectedIncidentFactors(form: FormData): Promise<string[]> {
   const possibleFactors = await prisma.incidentFactor.findMany({
@@ -126,7 +82,8 @@ export const actions = {
 
     let jurisdictionId: string | null = null
     try {
-      jurisdictionId = await getJurisdictionId(reportData.latitude, reportData.longitude)
+      const foundJurisdiction = await prisma.jurisdiction.getOrCreateByCoordinates(reportData.latitude, reportData.longitude)
+      jurisdictionId = foundJurisdiction?.id ?? null
     } catch (error) {
       console.error("Failed to get jurisdiction ID", error)
     }
