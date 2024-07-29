@@ -1,7 +1,7 @@
 <script lang="ts">
   import { MapLibre, GeoJSON, CircleLayer, SymbolLayer, Popup } from "svelte-maplibre"
   import type { TransportationMode } from "@prisma/client"
-  import type { FeatureCollection } from "geojson"
+  import type { FeatureCollection, Feature, Point } from "geojson"
   import maplibregl from "maplibre-gl"
   import ReportDetailPopup from "./ReportDetailPopup.svelte"
 
@@ -12,6 +12,9 @@
     transportationMode: TransportationMode
     incidentFactors: string[]
   }[]
+
+  let clickedFeature: Feature | undefined = undefined
+  $: popupLocation = (clickedFeature?.geometry as Point)?.coordinates as [number, number] | undefined
 
   const features: FeatureCollection = {
     type: "FeatureCollection",
@@ -52,10 +55,10 @@
       id="cluster_circles"
       applyToClusters
       paint={{
-        'circle-color': ['step', ['get', 'point_count'], '#51bbd6', 10, '#f1f075', 20, '#f28cb1'],
-        'circle-radius': ['step', ['get', 'point_count'], 20, 10, 30, 20, 40],
-        'circle-stroke-width': 1,
-        'circle-stroke-opacity': 1,
+        "circle-color": ["step", ["get", "point_count"], "#51bbd6", 10, "#f1f075", 20, "#f28cb1"],
+        "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 20, 40],
+        "circle-stroke-width": 1,
+        "circle-stroke-opacity": 1,
       }}
       manageHoverState
     />
@@ -65,12 +68,12 @@
       interactive={false}
       applyToClusters
       layout={{
-        'text-field': [
-          'format',
-          ['get', 'point_count_abbreviated'],
+        "text-field": [
+          "format",
+          ["get", "point_count_abbreviated"],
         ],
-        'text-size': 12,
-        'text-offset': [0, -0.1],
+        "text-size": 12,
+        "text-offset": [0, -0.1],
       }}
     />
 
@@ -78,14 +81,15 @@
       id="reports_circle"
       applyToClusters={false}
       hoverCursor="pointer"
+      on:click={(e) => (clickedFeature = e.detail.features?.[0])}
       paint={{
-        'circle-color': '#11b4da',
-        'circle-radius': 6,
-        'circle-stroke-width': 1,
-        'circle-stroke-color': '#fff',
+        "circle-color": "#11b4da",
+        "circle-radius": 6,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#fff",
       }}
     >
-      <Popup openOn="click" let:features>
+      <Popup openOn="click" lngLat={popupLocation} let:features>
         <ReportDetailPopup {features} />
       </Popup>
     </CircleLayer>
