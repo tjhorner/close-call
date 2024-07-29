@@ -59,7 +59,7 @@
     geolocationAvailable = "geolocation" in navigator
 
     map.setCenter(value)
-    map.setZoom(10)
+    map.setZoom(1)
 
     const mql = window.matchMedia("(prefers-color-scheme: dark)")
     mql.onchange = darkModeSwitched

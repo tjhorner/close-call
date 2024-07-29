@@ -57,14 +57,6 @@ export const actions = {
   default: async ({ request, getClientAddress }) => {
     const data = await request.formData()
 
-    const turnstileToken = getStringValue(data, "cf-turnstile-response")
-    const { success } = await validateToken(turnstileToken, TURNSTILE_SECRET_KEY)
-    if (!success) {
-      return fail(403, {
-        errorSummary: "Failed to validate CAPTCHA. Please try again."
-      })
-    }
-
     const reportData = reportForm({
       latitude: parseFloat(getStringValue(data, "location.latitude")),
       longitude: parseFloat(getStringValue(data, "location.longitude")),
@@ -77,6 +69,20 @@ export const actions = {
     if (reportData instanceof type.errors) {
       return fail(400, {
         errorSummary: reportData.summary
+      })
+    }
+
+    if (reportData.latitude === 0 || reportData.longitude === 0) {
+      return fail(400, {
+        errorSummary: "Please move the pin to the incident location."
+      })
+    }
+
+    const turnstileToken = getStringValue(data, "cf-turnstile-response")
+    const { success } = await validateToken(turnstileToken, TURNSTILE_SECRET_KEY)
+    if (!success) {
+      return fail(403, {
+        errorSummary: "Failed to validate CAPTCHA. Please try again."
       })
     }
 

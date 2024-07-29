@@ -9,10 +9,5 @@
     Drag the pin to the location of the incident.
   </p>
 
-  <PinDropInput
-    name="location"
-    value={{
-      lat: 47.64494688830544,
-      lng: -122.1608240539793
-    }} />
+  <PinDropInput name="location" />
 </section>
