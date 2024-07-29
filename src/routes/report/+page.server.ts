@@ -42,7 +42,7 @@ async function getSelectedIncidentFactors(form: FormData): Promise<string[]> {
 }
 
 export const load: PageServerLoad = async () => {
-  const incidentFactors = await prisma.incidentFactor.findMany({
+  const incidentFactors = prisma.incidentFactor.findMany({
     select: {
       id: true,
       shortDescription: true

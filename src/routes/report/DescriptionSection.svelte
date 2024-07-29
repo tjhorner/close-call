@@ -2,7 +2,7 @@
   import CheckboxGroup from "$lib/components/inputs/CheckboxGroup.svelte"
   import TextareaInput from "$lib/components/inputs/TextareaInput.svelte"
 
-  export let incidentFactors: { id: string, shortDescription: string }[]
+  export let incidentFactors: Promise<{ id: string, shortDescription: string }[]>
 </script>
 
 <section class="description">
@@ -12,12 +12,16 @@
     Select any factors that apply to this incident.
   </p>
 
-  <CheckboxGroup
-    groupName="incidentFactors"
-    options={incidentFactors.map(({ id, shortDescription }) => ({
-      value: id,
-      label: shortDescription
-    }))} />
+  {#await incidentFactors}
+    <p><em>Loading...</em></p>
+  {:then factors}
+    <CheckboxGroup
+      groupName="incidentFactors"
+      options={factors.map(({ id, shortDescription }) => ({
+        value: id,
+        label: shortDescription
+      }))} />
+  {/await}
 
   <p>
     You can also optionally describe the incident in more detail below.
