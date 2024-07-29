@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TransportationMode } from "@prisma/client"
+  import type { TransportationMode } from "@prisma/client"
   import type { Feature } from "svelte-maplibre"
 
   // Hacky workaround: https://github.com/dimfeld/svelte-maplibre/issues/183
