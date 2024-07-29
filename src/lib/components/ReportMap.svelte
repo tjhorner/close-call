@@ -10,7 +10,6 @@
     latitude: number
     longitude: number
     transportationMode: TransportationMode
-    description: string | null
     incidentFactors: string[]
   }[]
 
@@ -25,7 +24,6 @@
       properties: {
         occurredAt: report.occurredAt,
         transportationMode: report.transportationMode,
-        description: report.description,
         incidentFactors: report.incidentFactors.join(", ")
       }
     }))

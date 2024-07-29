@@ -8,7 +8,6 @@ export const load = (async () => {
       latitude: true,
       longitude: true,
       transportationMode: true,
-      description: true,
       incidentFactors: {
         select: {
           shortDescription: true

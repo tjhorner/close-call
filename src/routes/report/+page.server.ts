@@ -84,7 +84,7 @@ export const actions = {
       const descriptionIsInappropriate = await isTextInappropriate(reportData.description)
       if (descriptionIsInappropriate) {
         return fail(400, {
-          errorSummary: "Please remove any inappropriate or offensive language from your description. Keep in mind that it will be displayed publicly."
+          errorSummary: "Please remove any inappropriate or offensive language from your description."
         })
       }
     }

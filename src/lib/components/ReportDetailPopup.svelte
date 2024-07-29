@@ -8,7 +8,6 @@
   interface FeatureProps {
     occurredAt: string
     transportationMode: TransportationMode
-    description: string | null
     incidentFactors: string
   }
 
@@ -73,9 +72,5 @@
   <tr>
     <th>Incident Factors</th>
     <td>{displayOptionalField(featureProps.incidentFactors)}</td>
-  </tr>
-  <tr>
-    <th>Description</th>
-    <td>{displayOptionalField(featureProps.description)}</td>
   </tr>
 </table>
