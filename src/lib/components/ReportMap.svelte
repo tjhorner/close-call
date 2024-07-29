@@ -6,15 +6,12 @@
   import ReportDetailPopup from "./ReportDetailPopup.svelte"
 
   export let reports: {
-    id: string
     occurredAt: Date
     latitude: number
     longitude: number
     transportationMode: TransportationMode
     description: string | null
-    incidentFactors: {
-      shortDescription: string
-    }[]
+    incidentFactors: string[]
   }[]
 
   const features: FeatureCollection = {
@@ -29,7 +26,7 @@
         occurredAt: report.occurredAt,
         transportationMode: report.transportationMode,
         description: report.description,
-        incidentFactors: report.incidentFactors.map((factor) => factor.shortDescription).join(", ")
+        incidentFactors: report.incidentFactors.join(", ")
       }
     }))
   }

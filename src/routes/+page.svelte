@@ -69,4 +69,6 @@
   </a>
 </div>
 
-<ReportMap reports={data.reports} />
+{#await data.reports then reports}
+  <ReportMap {reports} />
+{/await}
