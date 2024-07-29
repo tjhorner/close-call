@@ -12,7 +12,7 @@
     incidentFactors: string
   }
 
-  const featureProps = (features as Feature[] | null)?.[0]?.properties as FeatureProps
+  $: featureProps = (features as Feature[] | null)?.[0]?.properties as FeatureProps
 
   function displayOptionalField(field: string | null) {
     return field?.trim() !== "" ? field!.trim() : "N/A"
