@@ -47,6 +47,14 @@
     display: block;
     max-height: 150px;
   }
+
+  @media screen and (max-width: 700px) {
+    td, th {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+  }
 </style>
 
 <table>
