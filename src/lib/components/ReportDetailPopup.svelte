@@ -70,7 +70,7 @@
     <td>{transportationModeDisplay[featureProps.transportationMode]}</td>
   </tr>
   <tr>
-    <th>Incident Factors</th>
+    <th>Incident Summary</th>
     <td>{displayOptionalField(featureProps.incidentFactors)}</td>
   </tr>
 </table>
