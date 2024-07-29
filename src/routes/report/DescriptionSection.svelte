@@ -25,6 +25,7 @@
 
   <TextareaInput
     aria-label="Additional incident details"
+    maxlength={1024}
     placeholder="Example: I was crossing Sesame St at the northwestern corner when a car ran the red light and nearly hit me."
     name="description" />
 </section>

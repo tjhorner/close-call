@@ -47,7 +47,7 @@
     <section class="submit">
       {#if form?.errorSummary}
         <Warning color="yellow">
-          <strong>Your form submission had errors:</strong>
+          <strong>Your submission had errors:</strong>
           {form.errorSummary}
         </Warning>
       {/if}

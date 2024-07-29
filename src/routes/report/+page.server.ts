@@ -4,6 +4,7 @@ import { fail, redirect } from "@sveltejs/kit"
 import { type } from "arktype"
 import type { PageServerLoad } from "./$types"
 import { validateToken } from "$lib/turnstile"
+import { isTextInappropriate } from "$lib/moderation"
 
 function getStringValue(form: FormData, key: string): string {
   const value = form.get(key)
@@ -19,7 +20,7 @@ const reportForm = type({
   longitude: "-180<number<180",
   occurredAt: "parse.date",
   transportationMode: "'WALKING' | 'BICYCLE' | 'WHEELCHAIR' | 'SCOOTER' | 'OTHER'",
-  description: "string",
+  description: "string<=1024",
   emailAddress: "email | ''"
 })
 
@@ -76,6 +77,16 @@ export const actions = {
       return fail(400, {
         errorSummary: "Please move the pin to the incident location."
       })
+    }
+
+    reportData.description = reportData.description.trim()
+    if (reportData.description.length > 0) {
+      const descriptionIsInappropriate = await isTextInappropriate(reportData.description)
+      if (descriptionIsInappropriate) {
+        return fail(400, {
+          errorSummary: "Please remove any inappropriate or offensive language from your description. Keep in mind that it will be displayed publicly."
+        })
+      }
     }
 
     const turnstileToken = getStringValue(data, "cf-turnstile-response")
