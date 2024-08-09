@@ -28,9 +28,9 @@ export const GET: RequestHandler = async ({ url }) => {
 
   for (const report of latestReports) {
     feed.addItem({
-      id: `${url.origin}/reports/${report.id}`,
+      id: `${url.origin}/#reports/${report.id}`,
       title: `Close Call Report #${report.id}`,
-      link: `${url.origin}/reports/${report.id}`,
+      link: `${url.origin}/#reports/${report.id}`,
       date: new Date(report.reportedAt),
       content: `
         <p>Occurred at: ${report.occurredAt}</p>
