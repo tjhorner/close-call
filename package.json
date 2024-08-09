@@ -32,6 +32,7 @@
 		"@silintl/svelte-google-places-autocomplete": "^1.2.5",
 		"arktype": "^2.0.0-dev.29",
 		"bad-words": "^3.0.4",
+		"feed": "^4.2.2",
 		"ioredis": "^5.3.2",
 		"openai": "^4.53.2",
 		"prisma-redis-middleware": "^4.8.0",
