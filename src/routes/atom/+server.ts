@@ -36,14 +36,14 @@ export const GET: RequestHandler = async ({ url }) => {
         <p>Occurred at: ${report.occurredAt}</p>
         <p>Location: ${report.latitude}, ${report.longitude}</p>
         <p>Transportation mode: ${report.transportationMode}</p>
-        <p>Incident factors: ${report.incidentFactors.map(f => f.shortDescription).join(",")}</p>
+        <p>Incident factors: ${report.incidentFactors.map(f => f.shortDescription).join(", ").trim()}</p>
       `
     })
   }
 
   return new Response(feed.atom1(), {
     headers: {
-      "Content-Type": "application/atom+xml"
+      "Content-Type": "application/atom+xml; charset=utf-8"
     }
   })
 }
