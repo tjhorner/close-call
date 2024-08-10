@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { ActionData, PageData } from "./$types"
   import { enhance } from "$app/forms"
+  import { env } from "$env/dynamic/public"
   import Warning from "$lib/components/Warning.svelte"
   import HiddenTurnstile from "$lib/components/HiddenTurnstile.svelte"
   import LocationSection from "./LocationSection.svelte"
@@ -60,7 +61,9 @@
         {/if}
       </button>
 
-      <HiddenTurnstile />
+      {#if !env.PUBLIC_DISABLE_TURNSTILE}
+        <HiddenTurnstile />
+      {/if}
 
       <p>
         By submitting a close call report, you understand that it will be

@@ -1,4 +1,5 @@
 import { TURNSTILE_SECRET_KEY } from "$env/static/private"
+import { env as dynamicEnv } from "$env/dynamic/public"
 import prisma from "$lib/prisma"
 import { fail, redirect } from "@sveltejs/kit"
 import { type } from "arktype"
@@ -89,12 +90,14 @@ export const actions = {
       }
     }
 
-    const turnstileToken = getStringValue(data, "cf-turnstile-response")
-    const { success } = await validateToken(turnstileToken, TURNSTILE_SECRET_KEY)
-    if (!success) {
-      return fail(403, {
-        errorSummary: "Failed to validate CAPTCHA. Please try again."
-      })
+    if (!dynamicEnv.PUBLIC_DISABLE_TURNSTILE) {
+      const turnstileToken = getStringValue(data, "cf-turnstile-response")
+      const { success } = await validateToken(turnstileToken, TURNSTILE_SECRET_KEY)
+      if (!success) {
+        return fail(403, {
+          errorSummary: "Failed to validate CAPTCHA. Please try again."
+        })
+      }
     }
 
     let jurisdictionId: string | null = null
