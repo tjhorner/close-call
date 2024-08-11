@@ -4,6 +4,7 @@ import type { PageServerLoad } from "./$types"
 export const load = (async () => {
   const reports = prisma.closeCallReport.findMany({
     select: {
+      id: true,
       occurredAt: true,
       latitude: true,
       longitude: true,

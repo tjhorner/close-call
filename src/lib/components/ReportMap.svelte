@@ -6,7 +6,9 @@
   import ReportDetailPopup from "./ReportDetailPopup.svelte"
   import { onMount } from "svelte"
 
+  export let initialSelectionId: string | undefined = undefined
   export let reports: {
+    id: string
     occurredAt: Date
     latitude: number
     longitude: number
@@ -42,14 +44,34 @@
     : undefined
   
   onMount(() => {
-    if (bounds) {
-      map.once("load", () => {
+    map.once("load", () => {
+      if (bounds) {
         map.fitBounds(bounds, {
           padding: 70,
           duration: 0
         })
-      })
-    }
+      }
+
+      if (initialSelectionId) {
+        const initialSelection = reports.find((report) => report.id === initialSelectionId)
+        if (initialSelection) {
+          // hacks upon hacks. lol
+          map.flyTo({
+            center: [initialSelection.longitude, initialSelection.latitude],
+            zoom: 16,
+            duration: 1000
+          })
+
+          map.once("idle", () => {
+            map.fire("click", {
+              latLng: new maplibregl.LngLat(initialSelection.longitude, initialSelection.latitude),
+              point: map.project(new maplibregl.LngLat(initialSelection.longitude, initialSelection.latitude)),
+              originalEvent: { }
+            })
+          })
+        }
+      }
+    })
   })
 </script>
 

@@ -1,8 +1,11 @@
 <script lang="ts">
+  import { browser } from "$app/environment"
   import ReportMap from "$lib/components/ReportMap.svelte"
   import type { PageData } from "./$types"
 
   export let data: PageData
+
+  $: initialSelectionId = (browser && location.hash.slice(1)) || undefined
 </script>
 
 <style>
@@ -70,5 +73,5 @@
 </div>
 
 {#await data.reports then reports}
-  <ReportMap {reports} />
+  <ReportMap {reports} {initialSelectionId} />
 {/await}

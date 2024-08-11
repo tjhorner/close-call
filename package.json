@@ -36,7 +36,7 @@
 		"ioredis": "^5.3.2",
 		"openai": "^4.53.2",
 		"prisma-redis-middleware": "^4.8.0",
-		"svelte-maplibre": "^0.9.9",
+		"svelte-maplibre": "^0.9.10",
 		"svelte-turnstile": "^0.7.1"
 	}
 }
