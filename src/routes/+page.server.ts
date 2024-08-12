@@ -18,6 +18,7 @@ export const load = (async () => {
   }).then(reports => (
     reports.map(report => ({
       ...report,
+      occurredAt: new Date(report.occurredAt), // work around caching issue
       incidentFactors: report.incidentFactors.map(incidentFactor => incidentFactor.shortDescription)
     }))
   ))

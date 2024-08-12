@@ -18,13 +18,6 @@
     pointer-events: none;
   }
 
-  .overlay-buttons.top-right {
-    top: 0;
-    right: 0;
-    flex-direction: row;
-    padding: 20px;
-  }
-
   .overlay-buttons.bottom-center {
     bottom: 0;
     left: 0;
