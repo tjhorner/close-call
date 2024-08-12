@@ -15,7 +15,7 @@
   }
 
   .horiz .gradient {
-    background: linear-gradient(to right, rgb(200,0,0), rgb(33,102,172));
+    background: linear-gradient(to right, rgb(220,0,0), rgb(33,102,172));
     height: 1em;
     width: 7em;
     flex: 1;

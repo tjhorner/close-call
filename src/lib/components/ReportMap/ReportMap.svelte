@@ -112,7 +112,7 @@
   <GeoJSON
     data={features}
     cluster={displayMode === "cluster" ? {
-      radius: 100,
+      radius: 200,
       maxZoom: 14
     } : undefined}
   >
@@ -167,11 +167,11 @@
           ["linear"],
           ["get", "recency"],
           0,
-          "rgb(200,0,0)",
+          "rgb(220,0,0)",
           30,
           "rgb(33,102,172)",
         ],
-        "circle-radius": 6,
+        "circle-radius": 8,
         "circle-stroke-width": 1,
         "circle-stroke-color": "#fff",
       }}
