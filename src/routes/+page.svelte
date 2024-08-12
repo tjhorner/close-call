@@ -1,6 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment"
-  import ReportMap from "$lib/components/ReportMap.svelte"
+  import ReportMap from "$lib/components/ReportMap/ReportMap.svelte"
+  import { Control } from "svelte-maplibre"
   import type { PageData } from "./$types"
 
   export let data: PageData
@@ -34,6 +35,7 @@
   }
 
   .round-button {
+    font-size: 1.25em;
     width: fit-content;
     pointer-events: auto;
     display: inline-block;
@@ -66,12 +68,12 @@
   </a>
 </div>
 
-<div class="overlay-buttons top-right">
-  <a href="/about" class="round-button gray">
-    About
-  </a>
-</div>
-
 {#await data.reports then reports}
-  <ReportMap {reports} {initialSelectionId} />
+  <ReportMap {reports} {initialSelectionId}>
+    <Control position="top-right">
+      <a href="/about" class="round-button gray">
+        About
+      </a>
+    </Control>
+  </ReportMap>
 {/await}
