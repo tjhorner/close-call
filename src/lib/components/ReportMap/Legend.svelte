@@ -28,6 +28,6 @@
   <div class="horiz">
     <span>Today</span>
     <div class="gradient"></div>
-    <span>30 days</span>
+    <span>30+ days</span>
   </div>
 </div>
