@@ -135,7 +135,7 @@
           "circle-color": ["step", ["get", "point_count"], "#51bbd6", 10, "#f1f075", 20, "#f28cb1"],
           "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 20, 40],
           "circle-stroke-width": 1,
-          "circle-stroke-opacity": 1,
+          "circle-stroke-opacity": 1
         }}
         manageHoverState
       />

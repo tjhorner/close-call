@@ -9,6 +9,7 @@
   import DescriptionSection from "./DescriptionSection.svelte"
   import TransportationModeSection from "./TransportationModeSection.svelte"
   import ContactSection from "./ContactSection.svelte"
+  import NoStandalone from "$lib/components/NoStandalone.svelte"
 
   export let data: PageData
   export let form: ActionData
@@ -24,9 +25,16 @@
   </a>
 
   <Warning>
-    This form is for near-misses only. If anyone was involved in a serious collision,
-    please <strong><a href="tel:911">dial 911</a></strong> immediately.
+    If anyone was involved in a serious collision, please
+    <strong><a href="tel:911">dial 911</a></strong> immediately.
   </Warning>
+
+  <NoStandalone>
+    <p>
+      If you don't have anything to report right now, you can
+      <a href="/bookmark">bookmark this form</a> for easy access.
+    </p>
+  </NoStandalone>
 
   <form method="post" use:enhance={() => {
     submitting = true
