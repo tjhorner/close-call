@@ -15,6 +15,7 @@
   }
 
   function updateSelectedDate(newValue: string) {
+    if (newValue === "") return
     value = new Date(newValue)
   }
 
