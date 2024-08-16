@@ -26,7 +26,7 @@ model CloseCallReport {
   jurisdictionId String?
 
   // we are duplicating some data here but... whatever
-  location Unsupported("geography(Point, 4326)") @default(dbgenerated())
+  location Unsupported("geometry(Point, 3857)") @default(dbgenerated())
 
   @@index([location], name: "idx_close_call_report_location", type: Gist)
 }
