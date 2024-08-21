@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import PinDropInput from "$lib/components/inputs/PinDropInput.svelte"
 </script>
 

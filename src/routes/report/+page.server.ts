@@ -59,6 +59,12 @@ export const actions = {
   default: async ({ request, getClientAddress }) => {
     const data = await request.formData()
 
+    if (getStringValue(data, "location.valid") === "false") {
+      return fail(400, {
+        errorSummary: "Please move the pin to the incident location."
+      })
+    }
+
     const reportData = reportForm({
       latitude: parseFloat(getStringValue(data, "location.latitude")),
       longitude: parseFloat(getStringValue(data, "location.longitude")),
@@ -71,12 +77,6 @@ export const actions = {
     if (reportData instanceof type.errors) {
       return fail(400, {
         errorSummary: reportData.summary
-      })
-    }
-
-    if (reportData.latitude === 0 || reportData.longitude === 0) {
-      return fail(400, {
-        errorSummary: "Please move the pin to the incident location."
       })
     }
 

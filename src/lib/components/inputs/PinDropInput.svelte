@@ -1,12 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte"
-  import { AttributionControl, DefaultMarker, MapLibre } from "svelte-maplibre"
+  import { AttributionControl, DefaultMarker, FullscreenControl, MapLibre, NavigationControl, ScaleControl } from "svelte-maplibre"
   import Warning from "../Warning.svelte"
   import GoogleMapsAutocomplete from "../GoogleMapsAutocomplete.svelte"
   import { PUBLIC_GOOGLE_MAPS_API_KEY as googleMapsApiKey } from "$env/static/public"
 
   export let name: string
-  export let value: { lat: number, lng: number } = { lat: 0, lng: 0 }
+  export let value: { lat: number, lng: number } = { lat: 47.62645194114881, lng: -122.206580681546 }
+
+  const initialValue = structuredClone(value)
 
   let geolocationAvailable = false
 
@@ -59,17 +61,18 @@
     geolocationAvailable = "geolocation" in navigator
 
     map.setCenter(value)
-    map.setZoom(1)
 
     const mql = window.matchMedia("(prefers-color-scheme: dark)")
     mql.onchange = darkModeSwitched
     darkModeSwitched(mql)
   })
+
+  $: changedFromInitial = value.lat !== initialValue.lat || value.lng !== initialValue.lng
 </script>
 
 <style>
   :global(.map) {
-    height: 250px;
+    height: 300px;
     margin-top: 10px;
     border-radius: 5px;
   }
@@ -131,11 +134,14 @@
 
 <MapLibre
   bind:map={map}
-  standardControls
   attributionControl={false}
   style="https://basemaps.cartocdn.com/gl/{basemap}-gl-style/style.json"
+  zoom={9}
   class="map">
 
+  <ScaleControl />
+  <NavigationControl />
+  <FullscreenControl />
   <AttributionControl compact />
 
   <DefaultMarker
@@ -144,5 +150,6 @@
     draggable />
 </MapLibre>
 
-<input type="hidden" name="{name}.latitude" bind:value={value.lat} />
-<input type="hidden" name="{name}.longitude" bind:value={value.lng} />
+<input type="hidden" name="{name}.valid" value={changedFromInitial} />
+<input type="hidden" name="{name}.latitude" value={value.lat} />
+<input type="hidden" name="{name}.longitude" value={value.lng} />
