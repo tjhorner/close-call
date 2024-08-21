@@ -137,6 +137,7 @@
   attributionControl={false}
   style="https://basemaps.cartocdn.com/gl/{basemap}-gl-style/style.json"
   zoom={9}
+  on:click={({ detail }) => setLocation(detail.lngLat)}
   class="map">
 
   <ScaleControl />
