@@ -146,7 +146,7 @@
   <AttributionControl compact />
 
   <DefaultMarker
-    offset={[0, -20]}
+    offset={[0, -15]}
     bind:lngLat={value}
     draggable />
 </MapLibre>
