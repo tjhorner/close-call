@@ -2,14 +2,10 @@ import prisma from "$lib/prisma"
 import { getCenter } from "geolib"
 
 export interface ClusteredReport {
-  cluster: number
-  id: number
-  reportedAt: Date
-  occurredAt: Date
+  cluster: number | null
+  id: string
   latitude: number
   longitude: number
-  transportationMode: string
-  description: string
 }
 
 export interface Cluster {
@@ -17,21 +13,23 @@ export interface Cluster {
   reports: ClusteredReport[]
 }
 
-export async function getReportClusters(): Promise<Cluster[]> {
+export interface ClusteredReports {
+  clusters: Cluster[]
+  remainder: ClusteredReport[]
+}
+
+export async function getReportClusters(jurisdictionId: string): Promise<ClusteredReports> {
   const results = await prisma.$queryRaw<ClusteredReport[]>`
-    WITH clustered_data AS (
-      SELECT
-        ST_ClusterDBScan("location", eps := 70, minpoints := 2) OVER () AS "cluster",
-        "id", "reportedAt", "occurredAt",
-        "latitude", "longitude",
-        "transportationMode", "description"
-      FROM
-        "CloseCallReport"
-    )
-    SELECT * FROM clustered_data WHERE cluster IS NOT NULL;
+    SELECT
+      ST_ClusterDBScan("location", eps := 70, minpoints := 2) OVER () AS "cluster",
+      "id", "latitude", "longitude"
+    FROM
+      "CloseCallReport"
+    WHERE
+      "jurisdictionId" = ${jurisdictionId};
   `
 
-  const clusterMap = new Map<number, Cluster>()
+  const clusterMap = new Map<number | null, Cluster>()
   for (const report of results) {
     const cluster = clusterMap.get(report.cluster)
     if (cluster) {
@@ -44,6 +42,9 @@ export async function getReportClusters(): Promise<Cluster[]> {
     }
   }
 
+  const remainder = clusterMap.get(null)?.reports ?? [ ]
+  clusterMap.delete(null)
+
   for (const [ _, cluster ] of clusterMap) {
     const centroid = getCenter(cluster.reports.map(report => ({
       latitude: report.latitude,
@@ -54,5 +55,8 @@ export async function getReportClusters(): Promise<Cluster[]> {
     cluster.centroid = centroid
   }
 
-  return Array.from(clusterMap.values())
+  return {
+    clusters: Array.from(clusterMap.values()).sort((a, b) => a.reports.length - b.reports.length),
+    remainder
+  }
 }

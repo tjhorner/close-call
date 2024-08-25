@@ -1,5 +1,6 @@
 import { queryOverpass } from "$lib/overpass"
 import { getDistance } from "geolib"
+import { abbreviateStreetAddress } from "./abbreviate"
 
 export async function getNearestIntersection(
   latitude: number,
@@ -28,7 +29,7 @@ export async function getNearestIntersection(
   )
 
   const intersections = results.elements.map((element) => ({
-    streetNames: element.tags["street_names"].split(";"),
+    streetNames: element.tags["street_names"].split(";").map(abbreviateStreetAddress),
     distance: getDistance({
       latitude, longitude
     }, {

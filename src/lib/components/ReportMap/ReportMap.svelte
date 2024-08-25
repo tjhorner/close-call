@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { MapLibre, GeoJSON, CircleLayer, SymbolLayer, Popup, HeatmapLayer, Control, ControlGroup, ControlButton, NavigationControl, GeolocateControl, FullscreenControl, ScaleControl, AttributionControl } from "svelte-maplibre"
+  import { MapLibre, GeoJSON, CircleLayer, SymbolLayer, Popup, HeatmapLayer, Control, ControlGroup } from "svelte-maplibre"
   import type { TransportationMode } from "@prisma/client"
   import type { FeatureCollection, Feature, Point } from "geojson"
   import maplibregl from "maplibre-gl"
