@@ -6,7 +6,7 @@
 
 */
 -- AlterTable
-ALTER TABLE "Jurisdiction" ADD COLUMN     "osmRelationId" INTEGER NOT NULL,
+ALTER TABLE "Jurisdiction" ADD COLUMN     "osmRelationId" INTEGER,
 ALTER COLUMN "gnisId" DROP NOT NULL;
 
 -- CreateIndex

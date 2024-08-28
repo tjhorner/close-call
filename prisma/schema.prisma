@@ -51,7 +51,7 @@ model Jurisdiction {
   name                       String
   stateName                  String?
   adminLevel                 Int?
-  osmRelationId              Int     @unique
+  osmRelationId              Int?    @unique
   gnisId                     String? @unique
   wikidataId                 String? @unique
   serviceRequestUrl          String?
