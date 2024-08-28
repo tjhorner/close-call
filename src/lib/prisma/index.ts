@@ -17,7 +17,7 @@ if (process.env.REDIS_URL) {
     models: [
       { model: "Jurisdiction" },
       { model: "CloseCallReport" },
-      { model: "IncidentFactor", cacheTime: 3600 }
+      { model: "IncidentFactor" }
     ],
     storage: {
       type: "redis",
@@ -28,7 +28,7 @@ if (process.env.REDIS_URL) {
         }
       }
     },
-    cacheTime: 300
+    cacheTime: 3600
   })
 
   prisma.$use(cacheMiddleware)
