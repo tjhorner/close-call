@@ -51,7 +51,7 @@
     value = location
     
     map.flyTo({
-      center: [value.lng, value.lat],
+      center: location,
       zoom: 15,
       speed: 2
     })
