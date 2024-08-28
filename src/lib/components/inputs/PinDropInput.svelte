@@ -16,11 +16,11 @@
 
   let map: maplibregl.Map
   let gettingLocation = false
-  let locationError = false
+  let locationError: string | null = null
 
   function setToCurrentLocation() {
     gettingLocation = true
-    locationError = false
+    locationError = null
 
     navigator.geolocation.getCurrentPosition((position) => {
       gettingLocation = false
@@ -31,8 +31,7 @@
       })
     }, (error) => {
       gettingLocation = false
-      locationError = true
-      alert(`😢 Couldn't retrieve your location. Please use the search or drag the pin manually.\n\n(Error: ${error.message} (${error.code}))`)
+      locationError = `${error.message} (code: ${error.code})`
     }, {
       enableHighAccuracy: true,
       timeout: 5000
@@ -104,9 +103,18 @@
 </style>
 
 {#if geolocationAvailable}
-  {#if locationError}
+  {#if locationError !== null}
     <Warning color="yellow">
-      Unable to obtain current location. Please drag the pin manually.
+      <p>
+        Unable to obtain current location. Please use the search or drag the pin manually.
+      </p>
+      
+      <p>
+        <details>
+          <summary>View error details</summary>
+          <pre style="margin: 2px 0">{locationError}</pre>
+        </details>
+      </p>
     </Warning>
   {/if}
 
