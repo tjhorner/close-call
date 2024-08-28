@@ -26,7 +26,10 @@ export const jurisdictionExtensions = Prisma.defineExtension({
           return null
         }
 
-        const cityOrCounty = elements.find((element) => ["8", "6"].includes(element.tags["admin_level"] ?? ""))
+        const city = elements.find((element) => element.tags["admin_level"] === "8")
+        const county = elements.find((element) => element.tags["admin_level"] === "6")
+
+        const cityOrCounty = city ?? county
         if (!cityOrCounty) {
           return null
         }
