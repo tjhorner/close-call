@@ -5,7 +5,7 @@ export interface OverpassResponse {
 export interface OverpassElement {
   type: string
   id: number
-  tags: { [key: string]: string }
+  tags: { [key: string]: string | undefined }
 }
 
 export async function queryOverpass(query: string) {

@@ -50,7 +50,9 @@ model Jurisdiction {
   id                         String  @id @default(uuid())
   name                       String
   stateName                  String?
-  gnisId                     String  @unique
+  adminLevel                 Int?
+  osmRelationId              Int     @unique
+  gnisId                     String? @unique
   wikidataId                 String? @unique
   serviceRequestUrl          String?
   serviceRequestInstructions String?

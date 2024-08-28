@@ -1,6 +1,12 @@
 import { queryOverpass } from "$lib/overpass"
 import { Prisma, type Jurisdiction } from "@prisma/client"
 
+function parseIntOrNull(value: string | undefined): number | null {
+  if (!value) return null
+  const parsed = parseInt(value)
+  return isNaN(parsed) ? null : parsed
+}
+
 export const jurisdictionExtensions = Prisma.defineExtension({
   name: "jurisdictionExtensions",
   model: {
@@ -11,7 +17,7 @@ export const jurisdictionExtensions = Prisma.defineExtension({
         const boundaryResults = await queryOverpass(
           `[timeout:10][out:json];
           is_in(${lat},${lng})->.a;
-          relation["boundary"="administrative"]["admin_level"~"8|4"](pivot.a);
+          relation["boundary"="administrative"]["admin_level"~"8|6|4"](pivot.a);
           out tags;`
         )
 
@@ -20,31 +26,42 @@ export const jurisdictionExtensions = Prisma.defineExtension({
           return null
         }
 
-        const city = elements.find((element) => element.tags["admin_level"] === "8")
-        if (!city) {
+        const cityOrCounty = elements.find((element) => ["8", "6"].includes(element.tags["admin_level"] ?? ""))
+        if (!cityOrCounty) {
           return null
         }
 
         const state = elements.find((element) => element.tags["admin_level"] === "4")
 
-        const jurisdictionTags = city.tags
-        const gnisId = jurisdictionTags["gnis:feature_id"]
+        const jurisdictionTags = cityOrCounty.tags
 
-        if (!gnisId) {
-          return null
+        const osmRelationId = cityOrCounty.id
+        const gnisId = jurisdictionTags["gnis:feature_id"] ?? null
+        const wikidataId = jurisdictionTags["wikidata"] ?? null
+
+        // Match existing jurisdictions by priority of GNIS ID, Wikidata ID, or OSM relation ID
+        let filter: any
+        if (gnisId) {
+          filter = { gnisId }
+        } else if (wikidataId) {
+          filter = { wikidataId }
+        } else {
+          filter = { osmRelationId }
+        }
+
+        const fields = {
+          name: jurisdictionTags["name"] ?? "Unknown",
+          stateName: state?.tags["name"] ?? jurisdictionTags["is_in:state"] ?? null,
+          adminLevel: parseIntOrNull(jurisdictionTags["admin_level"]),
+          osmRelationId,
+          wikidataId,
+          gnisId
         }
 
         const jurisdiction = await (context as any).upsert({
-          where: {
-            gnisId
-          },
-          update: {},
-          create: {
-            name: jurisdictionTags["name"] ?? "Unknown",
-            stateName: state?.tags["ref"] ?? jurisdictionTags["is_in:state"] ?? null,
-            wikidataId: jurisdictionTags["wikidata"] ?? null,
-            gnisId
-          }
+          where: filter,
+          update: fields,
+          create: fields
         })
 
         return jurisdiction

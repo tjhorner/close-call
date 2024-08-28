@@ -3,9 +3,7 @@ import { Redis } from "ioredis"
 import { createPrismaRedisCache } from "prisma-redis-middleware"
 import { jurisdictionExtensions } from "./jurisdiction"
 
-const prisma = new PrismaClient({
-  log: [ "query" ]
-})
+const prisma = new PrismaClient()
 
 if (process.env.REDIS_URL) {
   let redisUrl = process.env.REDIS_URL

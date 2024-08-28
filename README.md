@@ -2,7 +2,7 @@
 
 [closecall.report](https://www.closecall.report) is a website where people can report near-misses (or "close calls") with vehicles while walking, rolling, cycling, or are an otherwise vulnerable road user. These anonymized reports are displayed on a public map for anyone to see.
 
-![image](https://github.com/user-attachments/assets/3a1d48af-db7d-4a4f-8120-3a72310fa0eb)
+![Screenshot of a map with clusters of points representing close call reports](https://github.com/user-attachments/assets/f634e194-8f82-43cc-98ab-d21e0cb9c5bf)
 
 ## Background
 
@@ -40,6 +40,9 @@ cp .env.example .env
 
 # Start supporting services (Postgres, Redis)
 docker compose up -d
+
+# Migrate the database to match schema
+npm run migrate:dev
 
 # Start the development server
 npm run dev

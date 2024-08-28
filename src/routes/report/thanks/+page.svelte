@@ -19,7 +19,7 @@
     <h2>Next steps</h2>
 
     <p>
-      You can choose to also report this incident directly with the city of
+      You can choose to also report this incident directly with
       <strong>{data.jurisdiction.name}</strong>. Many jurisdictions have a
       self-service portal to submit requests for service, including reporting
       road incidents.
