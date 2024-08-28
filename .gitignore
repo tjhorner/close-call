@@ -2,3 +2,4 @@ node_modules
 .svelte-kit
 .env
 prisma/dev-db-data
+.DS_Store
