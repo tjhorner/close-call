@@ -1,7 +1,11 @@
 import prisma from "$lib/prisma"
 import type { PageServerLoad } from "./$types"
 
-export const load = (async () => {
+export const load = (async ({ setHeaders }) => {
+  setHeaders({
+    "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate"
+  })
+
   const reports = prisma.closeCallReport.findMany({
     select: {
       id: true,

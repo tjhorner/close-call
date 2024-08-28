@@ -42,7 +42,11 @@ async function getSelectedIncidentFactors(form: FormData): Promise<string[]> {
   return selectedFactors
 }
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ setHeaders }) => {
+  setHeaders({
+    "Cache-Control": "public, max-age=0, s-maxage=86400, stale-while-revalidate"
+  })
+
   const incidentFactors = prisma.incidentFactor.findMany({
     select: {
       id: true,
