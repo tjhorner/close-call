@@ -32,7 +32,7 @@
     }, (error) => {
       gettingLocation = false
       locationError = true
-      console.warn(error)
+      alert(`😢 Couldn't retrieve your location. Please use the search or drag the pin manually.\n\n(Error: ${error.message} (${error.code}))`)
     }, {
       enableHighAccuracy: true,
       timeout: 5000
