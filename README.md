@@ -16,7 +16,7 @@ To spread awareness of this tool and collect the most comprehensive data possibl
 
 ### Who?
 
-This project is created and maintained by the volunteers at [Eastside Urbanism](https://eastsideurbanism.org/).
+This project is created and maintained by the volunteers at [Eastside Urbanism](https://eastsideurbanism.org/). If you have any feedback regarding the project, we would be glad to hear it! The best way to get in touch is by opening a GitHub issue or joining our [Discord](https://discord.com/invite/zhXKQ4vMp8).
 
 ## Development
 
