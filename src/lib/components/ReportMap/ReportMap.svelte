@@ -54,7 +54,7 @@
     const zoom = await (map.getSource("reports") as maplibregl.GeoJSONSource).getClusterExpansionZoom(clusterId)
     map.easeTo({
       center: (feature.geometry as Point).coordinates as [number, number],
-      zoom: zoom + 1
+      zoom: Math.max(11, zoom + 1)
     })
   }
 
