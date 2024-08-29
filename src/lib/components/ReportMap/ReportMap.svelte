@@ -45,6 +45,19 @@
     displayMode = displayMode === "heatmap" ? "cluster" : "heatmap"
   }
 
+  async function zoomToCluster(feature: Feature | undefined) {
+    if (!feature) return
+
+    const clusterId = feature.properties?.cluster_id
+    if (!clusterId) return
+
+    const zoom = await (map.getSource("reports") as maplibregl.GeoJSONSource).getClusterExpansionZoom(clusterId)
+    map.easeTo({
+      center: (feature.geometry as Point).coordinates as [number, number],
+      zoom
+    })
+  }
+
   $: bounds = reports.length
     ? reports.reduce((bounds, report) => {
         return bounds.extend([report.longitude, report.latitude])
@@ -110,9 +123,10 @@
   <slot />
 
   <GeoJSON
+    id="reports"
     data={features}
     cluster={displayMode === "cluster" ? {
-      radius: 200,
+      radius: 300,
       maxZoom: 14
     } : undefined}
   >
@@ -131,12 +145,14 @@
       <CircleLayer
         id="cluster_circles"
         applyToClusters
+        hoverCursor="pointer"
         paint={{
           "circle-color": ["step", ["get", "point_count"], "#51bbd6", 10, "#f1f075", 20, "#f28cb1"],
           "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 20, 40],
           "circle-stroke-width": 1,
           "circle-stroke-opacity": 1
         }}
+        on:click={(e) => zoomToCluster(e.detail.features?.[0])}
         manageHoverState
       />
 
