@@ -24,14 +24,11 @@
 </script>
 
 <style>
-  :global(body) {
-    width: 8.5in;
-  }
-
   .hotspot {
     display: flex;
     margin-bottom: 20px;
     gap: 20px;
+    break-inside: avoid;
   }
 
   :global(.hotspot-map) {
@@ -76,6 +73,7 @@
 
   @media screen {
     :global(body) {
+      width: 8.5in;
       margin: 0 auto;
     }
   }
@@ -91,6 +89,7 @@
 
   .report {
     border-top: 1px solid lightgray;
+    break-inside: avoid;
   }
 
   @media print {

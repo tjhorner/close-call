@@ -1,14 +1,7 @@
 import OpenAI from "openai"
 import { env } from "$env/dynamic/private"
-import BadWordsFilter from "bad-words"
-
-const badWordsFilter = new BadWordsFilter()
 
 export async function isTextInappropriate(text: string): Promise<boolean> {
-  if (badWordsFilter.isProfane(text)) {
-    return true
-  }
-
   if (env.OPENAI_API_KEY) {
     const openai = new OpenAI()
 
