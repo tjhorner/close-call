@@ -8,7 +8,7 @@
   <p>
     This project keeps track of user-reported "close calls" &mdash; near-misses
     between people walking, biking, and driving. We use this data to bring awareness
-    to poorly-designed roads and intersections, and to advocate for safer streets
+    to higher-risk roads and intersections, and to advocate for safer streets
     for everyone. Examples of close calls:
   </p>
 
