@@ -74,11 +74,7 @@
       {/if}
 
       <p>
-        By submitting a close call report, you understand that it will be
-        displayed anonymously on a public map with other reports in your area.
-        The data may also be used by the volunteers at
-        <a href="https://eastsideurbanism.org/">Eastside Urbanism</a>
-        to help make the roads safer for everyone (for example, by sharing it with local officials).
+        By submitting a close call report, you understand that it will be displayed anonymously on a public map with other reports in your area. This is a project created by <a href="https://eastsideurbanism.org/" target="_blank">Eastside Urbanism</a>, and is not affiliated with any city or government agency. However, we may share information from your report with local officials so that we can advocate for safer streets.
       </p>
     </section>
   </form>
