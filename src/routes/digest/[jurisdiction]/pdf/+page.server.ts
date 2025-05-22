@@ -1,5 +1,5 @@
 import { generateDigestData } from "$lib/digest/generate"
-import type { PageServerLoad } from "./$types"
+import type { PageServerLoad } from "../$types"
 import { DIGEST_KEY } from "$env/static/private"
 import { error } from "@sveltejs/kit"
 

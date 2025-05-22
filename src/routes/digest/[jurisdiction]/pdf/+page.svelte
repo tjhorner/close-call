@@ -5,6 +5,12 @@
 
   export let data: PageData
 
+  const todayFormatted = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  })
+
   const transportationModeDisplay: { [key: string]: string } = {
     BICYCLE: "🚲 Bike",
     WALKING: "🚶 Pedestrian",
@@ -136,7 +142,7 @@
   <div class="title">
     <h1>Close Call Report Digest</h1>
     <h2>{data.jurisdiction.name}, {data.jurisdiction.stateName}</h2>
-    <h3>August 2024</h3>
+    <h3>Generated {todayFormatted}</h3>
   </div>
 </div>
 

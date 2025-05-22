@@ -3,6 +3,7 @@ import { getReportClusters } from "./clusters"
 import { getNearestIntersection } from "./intersection"
 import prisma from "$lib/prisma"
 import { summarizeReports } from "./summary"
+import type { Feature, FeatureCollection } from "geojson"
 
 export interface DigestData {
   jurisdiction: Jurisdiction
@@ -62,4 +63,32 @@ export async function generateDigestData(jurisdictionId: string): Promise<Digest
   })
 
   return data
+}
+
+export async function generateDigestShapefile(jurisdictionId: string): Promise<FeatureCollection> {
+  const reports = await prisma.closeCallReport.findMany({
+    where: { jurisdictionId },
+    include: { incidentFactors: true }
+  })
+
+  const features: Feature[] = reports.map((report) => ({
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [ report.longitude, report.latitude ]
+    },
+    properties: {
+      id: report.id,
+      occurredAt: new Date(report.occurredAt).toISOString(),
+      reportedAt: new Date(report.reportedAt).toISOString(),
+      description: report.description,
+      transportationMode: report.transportationMode,
+      incidentFactors: report.incidentFactors.map((factor) => factor.shortDescription)
+    }
+  }))
+
+  return {
+    type: "FeatureCollection",
+    features
+  }
 }
