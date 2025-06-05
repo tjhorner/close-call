@@ -9,7 +9,7 @@
   <h2>📝 What happened?</h2>
 
   <p>
-    Select any factors that apply to this incident.
+    Select all that apply.
   </p>
 
   {#await incidentFactors}
