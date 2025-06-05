@@ -144,6 +144,7 @@
   bind:map={map}
   attributionControl={false}
   style="https://basemaps.cartocdn.com/gl/{basemap}-gl-style/style.json"
+  cooperativeGestures={true}
   zoom={9}
   on:click={({ detail }) => setLocation(detail.lngLat)}
   class="map">

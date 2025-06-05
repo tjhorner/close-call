@@ -34,6 +34,8 @@
 
   <p>
     This is a project from <a href="https://eastsideurbanism.org/">Eastside Urbanism</a>.
+    If you have any inquiries about it, please contact us at
+    <a href="mailto:friends@eastsideurbanism.org">friends@eastsideurbanism.org</a>.
   </p>
 
   <p>
