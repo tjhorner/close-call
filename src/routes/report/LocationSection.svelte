@@ -6,7 +6,7 @@
   <h2>🌎 Where did it happen?</h2>
 
   <p>
-    Drag the pin to the location of the incident.
+    Move the pin to the incident location by tapping on the map.
   </p>
 
   <PinDropInput name="location" />
