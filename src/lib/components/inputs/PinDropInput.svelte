@@ -48,11 +48,11 @@
 
   function setLocation(location: { lat: number, lng: number }) {
     value = location
-    
+
     map.flyTo({
       center: location,
-      zoom: 15,
-      speed: 2
+      zoom: Math.max(15, map.getZoom()),
+      speed: 2,
     })
   }
 
