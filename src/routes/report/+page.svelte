@@ -43,9 +43,10 @@
       update({ reset: false })
     }
   }}>
-    <LocationSection />
 
     <TimeSection />
+
+    <LocationSection />
 
     <TransportationModeSection />
 
