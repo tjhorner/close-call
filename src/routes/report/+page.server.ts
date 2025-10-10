@@ -5,7 +5,7 @@ import { fail, redirect } from "@sveltejs/kit"
 import { type } from "arktype"
 import type { PageServerLoad } from "./$types"
 import { validateToken } from "$lib/turnstile"
-import { isTextInappropriate } from "$lib/moderation"
+import { isTextInappropriate, isWithinAllowedBounds } from "$lib/moderation"
 
 function getStringValue(form: FormData, key: string): string {
   const value = form.get(key)
@@ -81,6 +81,24 @@ export const actions = {
     if (reportData instanceof type.errors) {
       return fail(400, {
         errorSummary: reportData.summary
+      })
+    }
+
+    if (isWithinAllowedBounds(reportData.latitude, reportData.longitude) === false) {
+      return fail(400, {
+        errorSummary: "We currently only accept reports from within the USA."
+      })
+    }
+
+    if (reportData.occurredAt > new Date()) {
+      return fail(400, {
+        errorSummary: "The incident time cannot be in the future."
+      })
+    }
+
+    if (reportData.occurredAt.getFullYear() < 2025) {
+      return fail(400, {
+        errorSummary: "This incident is too old to report."
       })
     }
 

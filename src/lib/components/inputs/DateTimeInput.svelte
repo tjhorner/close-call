@@ -22,6 +22,7 @@
   onMount(() => {
     const initialValue = toLocalISOString(value)
     inputElement.value = initialValue
+    inputElement.min = "2025-01-01T00:00:00.000"
     inputElement.max = initialValue
   })
 </script>
