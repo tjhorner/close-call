@@ -103,6 +103,7 @@
 
 <MapLibre
   bind:map={map}
+  hash={true}
   standardControls
   style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
 >
