@@ -66,7 +66,7 @@
   
   onMount(() => {
     map.once("load", () => {
-      if (bounds) {
+      if (bounds && window.location.hash === "") {
         map.fitBounds(bounds, {
           padding: {
             top: 70,
