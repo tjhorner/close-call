@@ -58,6 +58,47 @@
     })
   }
 
+  function exportIncidentsInViewport() {
+    if (!map) return
+
+    const bounds = map.getBounds()
+    const visibleReports = reports.filter(
+      (report) =>
+        report.longitude >= bounds.getWest() &&
+        report.longitude <= bounds.getEast() &&
+        report.latitude >= bounds.getSouth() &&
+        report.latitude <= bounds.getNorth()
+    )
+
+    if (visibleReports.length === 0) {
+      alert("There are no incidents to export in the current viewport.")
+      return
+    }
+
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      ["id,occurredAt,latitude,longitude,transportationMode,incidentFactors"]
+        .concat(
+          visibleReports.map(
+            (report) =>
+              `${report.id},${report.occurredAt.toISOString()},${report.latitude},${report.longitude},${report.transportationMode},"${report.incidentFactors.join(
+                ";"
+              )}"`
+          )
+        )
+        .join("\n")
+
+    const fileName = `Close Call Incident Export ${new Date().toISOString().slice(0, 10)}.csv`
+
+    const encodedUri = encodeURI(csvContent)
+    const link = document.createElement("a")
+    link.setAttribute("href", encodedUri)
+    link.setAttribute("download", fileName)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   $: bounds = reports.length
     ? reports.reduce((bounds, report) => {
         return bounds.extend([report.longitude, report.latitude])
@@ -117,6 +158,10 @@
     <ControlGroup>
       <MapControlButton label="Toggle Heatmap" on:click={toggleDisplayMode}>
         🔥
+      </MapControlButton>
+
+      <MapControlButton label="Export Visible Incidents" on:click={exportIncidentsInViewport}>
+        📥
       </MapControlButton>
     </ControlGroup>
   </Control>
