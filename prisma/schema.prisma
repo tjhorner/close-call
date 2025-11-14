@@ -58,4 +58,14 @@ model Jurisdiction {
   serviceRequestInstructions String?
 
   reports CloseCallReport[]
+  overrides JurisdictionOverride[]
+}
+
+model JurisdictionOverride {
+  id       String   @id @default(uuid())
+  geometry Unsupported("geometry(MultiLineString, 3857)") @default(dbgenerated())
+  radius   Float
+
+  jurisdiction   Jurisdiction @relation(fields: [jurisdictionId], references: [id])
+  jurisdictionId String
 }

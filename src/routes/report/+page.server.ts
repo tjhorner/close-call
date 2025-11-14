@@ -123,11 +123,18 @@ export const actions = {
     }
 
     let jurisdictionId: string | null = null
-    try {
-      const foundJurisdiction = await prisma.jurisdiction.getOrCreateByCoordinates(reportData.latitude, reportData.longitude)
-      jurisdictionId = foundJurisdiction?.id ?? null
-    } catch (error) {
-      console.error("Failed to get jurisdiction ID", error)
+
+    const [ override ] = await prisma.$queryRaw<{ jurisdictionId: string }[]>`select "jurisdictionId" from "JurisdictionOverride" jo where ST_DWithin(jo.geometry, ST_Transform(ST_Point(${reportData.longitude}, ${reportData.latitude}, 4326), 3857), jo.radius) limit 1;`
+
+    if (override) {
+      jurisdictionId = override.jurisdictionId
+    } else {
+      try {
+        const foundJurisdiction = await prisma.jurisdiction.getOrCreateByCoordinates(reportData.latitude, reportData.longitude)
+        jurisdictionId = foundJurisdiction?.id ?? null
+      } catch (error) {
+        console.error("Failed to get jurisdiction ID", error)
+      }
     }
 
     const selectedIncidentFactors = await getSelectedIncidentFactors(data)
