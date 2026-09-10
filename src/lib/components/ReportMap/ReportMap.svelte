@@ -225,7 +225,7 @@
       on:click={(e) => (clickedFeature = e.detail.features?.[0])}
       paint={{
         "circle-color": [
-          "interpolate",
+          "interpolate-hcl",
           ["linear"],
           ["get", "recency"],
           0,

@@ -29,12 +29,12 @@ export async function getNearestIntersection(
   )
 
   const intersections = results.elements.map((element) => ({
-    streetNames: element.tags["street_names"].split(";").map(abbreviateStreetAddress),
+    streetNames: element.tags["street_names"]!.split(";").map(abbreviateStreetAddress),
     distance: getDistance({
       latitude, longitude
     }, {
-      latitude: parseFloat(element.tags["lat"]),
-      longitude: parseFloat(element.tags["lon"])
+      latitude: parseFloat(element.tags["lat"]!),
+      longitude: parseFloat(element.tags["lon"]!)
     })
   })).sort((a, b) => a.distance - b.distance)
 
