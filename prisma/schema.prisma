@@ -47,22 +47,22 @@ enum TransportationMode {
 }
 
 model Jurisdiction {
-  id                         String  @id @default(uuid())
-  name                       String
-  stateName                  String?
-  adminLevel                 Int?
-  osmRelationId              Int?    @unique
-  gnisId                     String? @unique
-  wikidataId                 String? @unique
-  serviceRequestUrl          String?
-  serviceRequestInstructions String?
+  id                             String  @id @default(uuid())
+  name                           String
+  stateName                      String?
+  adminLevel                     Int?
+  osmRelationId                  Int?    @unique
+  gnisId                         String? @unique
+  wikidataId                     String? @unique
+  serviceRequestUrl              String?
+  serviceRequestInstructions     String?
 
-  reports CloseCallReport[]
+  reports   CloseCallReport[]
   overrides JurisdictionOverride[]
 }
 
 model JurisdictionOverride {
-  id       String   @id @default(uuid())
+  id       String                                         @id @default(uuid())
   geometry Unsupported("geometry(MultiLineString, 3857)") @default(dbgenerated())
   radius   Float
 
